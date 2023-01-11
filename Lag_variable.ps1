@@ -1,4 +1,4 @@
-$Projetos = 'C:\Projetos\';
+$Projetos = 'C:\Projetos\'
 
 $Tcg = @{
     path    = "$projetos\LagTcg\"
@@ -20,8 +20,8 @@ $Payment = @{
 
 $Platform = 
 $Plat =  @{
-    path    = "$projetos\nddFrete_Platform",
-    config  = "$projetos\nddFrete_Platform\configs\",
+    path    = "$projetos\nddFrete_Platform"
+    config  = "$projetos\nddFrete_Platform\configs\"
     projects= "$projetos\nddFrete_Platform\projects\"
 }
 
