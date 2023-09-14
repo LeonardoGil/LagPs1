@@ -1,3 +1,74 @@
+function Build-Platform {
+
+    Write-Output 'Iniciando Jobs';
+
+    $coreBuildJob = Start-Job -Name 'coreBuildJob' -ScriptBlock { Import-Module -Name 'C:\PowerShell\NddLibrary.ps1'; Build-Project -Project 'core' };
+    $layoutBuildJob = Start-Job -Name 'layoutBuildJob' -ScriptBlock { Import-Module -Name 'C:\PowerShell\NddLibrary.ps1'; Build-Project -Project 'layout' };
+    $platformBrowserBuildJob = Start-Job -Name 'platformBrowserBuildJob' -ScriptBlock { Import-Module -Name 'C:\PowerShell\NddLibrary.ps1'; Build-Project -Project 'platform-browser' };
+    $globalStylesBuildJob = Start-Job -Name 'globalStylesBuildJob' -ScriptBlock { Import-Module -Name 'C:\PowerShell\NddLibrary.ps1'; Build-Project -Project 'global-styles' };
+
+    Write-Output 'Aguardando execução';
+    Wait-Job -Name 'coreBuildJob', 'layoutBuildJob', 'platformBrowserBuildJob', 'globalStylesBuildJob';
+
+    Receive-Job -Job $coreBuildJob;
+    Receive-Job -Job $layoutBuildJob;
+    Receive-Job -Job $platformBrowserBuildJob;
+    Receive-Job -Job $globalStylesBuildJob;
+
+    Write-Output 'Excluindo jobs';
+    Remove-Job $coreBuildJob, $layoutBuildJob, $platformBrowserBuildJob, $globalStylesBuildJob;
+
+    Write-Output 'Exit code: 0';
+}
+
+function Build-Project {
+    
+    param (        
+        [Parameter(Mandatory=$true)]
+        [string]
+        $Project
+    )
+
+    if ([string]::IsNullOrEmpty($Project)) {
+        Write-Error 'Variavel do Projeto vazia.'
+        return;
+    }
+    
+    try {
+        
+        Set-Location "C:\Projetos\nddFrete_Platform";
+
+        ndk build $Project --featureMode=tpl;
+
+        if ($lastexitcode -ne 0) {
+            throw ("Fail build $Project -> $errorMessage");
+        }
+
+        clear-;
+        Write-Host "Successfully build $Project" -ForegroundColor Green;
+    }
+    catch {
+        Clear-Host; 
+        Write-Host "Fail build $Project" -ForegroundColor Red;
+    }
+}
+
+function Invoke-Projects {
+
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]
+        $path
+    )
+
+    Set-Location $path;
+
+    wt new-tab --run `
+    {
+        Write-Output 'Teste';
+    } -p 'Windows PowerShell'
+}
+
 class Projeto {
     [string] $path    
     [string] $sln
@@ -80,4 +151,34 @@ function Get-Logs-Files {
     }
 
     return $files;
+}
+
+function Docker-Lag {
+    $actual = Get-Location
+
+    Set-Location -Path $tpl.path
+    Set-Location -Path .\Configurations\Docker
+    
+    docker-compose -f tpl.yml up -d --force-recreate
+
+    Set-Location -Path $actual
+}
+
+function Lag-Client-TPL {
+    Set-Location -Path $platform.Path;
+    ndk run 'client-tpl';
+}
+
+function Lag-TPL {
+    Set-Location -Path $platform.Path;
+    ndk run 'tpl';
+}
+
+function Open-Info {
+    code $ndd.server
+}
+
+function UpdateInator {
+    Set-Location -Path $ndd.update
+    .\updatinator.exe
 }

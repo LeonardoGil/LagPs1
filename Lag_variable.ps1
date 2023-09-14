@@ -1,4 +1,9 @@
-$Projetos = 'C:\Projetos\'
+$Projetos = 'C:\Projetos'
+
+$Cargo = @{
+    path = "$projetos\nddCargo"
+    sln = "$projetos\nddCargo\microsservices\MicrosservicesNDDCargo\MicrosservicesNDDCargo.sln"
+}
 
 $Tcg = @{
     path    = "$projetos\LagTcg\"
@@ -32,6 +37,11 @@ $TPL = @{
     logs    = "C:\Applications\operadorlogistico\logs"
 }
 
+$ClientTpl = @{
+    path    = "$($platform.path)\projects\client-tpl"
+    client  = "$($platform.path)\projects\client-tpl\Client"
+}
+
 $Autentication =  @{
     path    = "$projetos\nddFrete_Authentication"
     sln     = "$projetos\nddFrete_Authentication\solutions\Authentication.sln"
@@ -40,4 +50,14 @@ $Autentication =  @{
 $Omp = @{
     path        = "$projetos\MyThemesOnOhMyPosh"
     fileTheme   = "$projetos\MyThemesOnOhMyPosh\godShell.omp.json"
+}
+
+$lagPS = @{
+    path = 'C:\PowerShell'
+}
+
+$ndd = @{
+    path = 'C:\Ndd'
+    server = 'C:\Ndd\Servidores.md'
+    update = 'C:\Ndd\UpdateInator'
 }
