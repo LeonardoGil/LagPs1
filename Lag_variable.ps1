@@ -67,3 +67,8 @@ $polaris = @{
     client  = "$projetos\Polaris\projects\core\client"
     sln     = "$projetos\Polaris\projects\core\server\NDDPolarisSolutionServer.sln"
 }
+
+$lagControl = @{
+    path    = "$projetos\lagControl\"
+    sln     = "$projetos\lagControl\lagControl.sln"
+}
