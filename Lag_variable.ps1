@@ -61,3 +61,9 @@ $ndd = @{
     server = 'C:\Ndd\Servidores.md'
     update = 'C:\Ndd\UpdateInator'
 }
+
+$polaris = @{
+    path    = "$projetos\Polaris" 
+    client  = "$projetos\Polaris\projects\core\client"
+    sln     = "$projetos\Polaris\projects\core\server\NDDPolarisSolutionServer.sln"
+}
