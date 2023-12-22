@@ -174,11 +174,20 @@ function Lag-TPL {
     ndk run 'tpl';
 }
 
-function Open-Info {
-    code $ndd.server
-}
-
 function UpdateInator {
     Set-Location -Path $ndd.update
     .\updatinator.exe
+}
+
+function Autentication-Portal {
+    $body = @{
+        grant_type='client_credentials'
+        client_id='7afbb7b3a0ab4ede893e2f9490e9ffcf'
+        client_secret='ibtwgrHna+thf+p9wkqdo7M250zyynUTwYXA72lPWC4='
+    }
+    
+    $contentType = 'application/x-www-form-urlencoded' 
+    
+    $request = Invoke-WebRequest -Method POST -Uri 'https://host.docker.internal:5001/connect/token' -body $body -ContentType $contentType
+    Write-Output $request.Content;
 }
