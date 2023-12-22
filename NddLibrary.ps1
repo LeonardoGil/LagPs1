@@ -189,5 +189,12 @@ function Autentication-Portal {
     $contentType = 'application/x-www-form-urlencoded' 
     
     $request = Invoke-WebRequest -Method POST -Uri 'https://host.docker.internal:5001/connect/token' -body $body -ContentType $contentType
-    Write-Output $request.Content;
+    
+    $json = $request.Content | ConvertFrom-Json
+
+    $bearer =  "Bearer $($json.access_token)"; 
+
+    Set-Clipboard -Value $bearer
+
+    Write-Output "Token Gerado: $($bearer)"
 }
