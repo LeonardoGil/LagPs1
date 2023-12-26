@@ -198,3 +198,23 @@ function Autentication-Portal {
 
     Write-Output "Token Gerado: $($bearer)"
 }
+
+
+function Autentication-Mobile {
+    $body = @{
+        client_id='3b9a77fb35a54e40815f4fa8641234c5'
+        grant_type='password'
+        userName='11484671902'
+        password='12345678'
+    }
+    
+    $request = Invoke-WebRequest -Method POST -Uri 'http://localhost:9002/token' -body $body
+    
+    $json = $request.Content | ConvertFrom-Json
+
+    $bearer =  "Bearer $($json.AccessToken)"; 
+
+    Set-Clipboard -Value $bearer
+
+    Write-Output "Token Gerado: $($bearer)"
+}
