@@ -3,7 +3,6 @@ $Projetos = 'C:\Projetos'
 $Cargo = @{
     path = "$projetos\nddCargo"
     sln = "$projetos\nddCargo\microsservices\MicrosservicesNDDCargo\MicrosservicesNDDCargo.sln"
-    info    = "$($ndd.path)\cargo"
 }
 
 $Tcg = @{
@@ -36,7 +35,6 @@ $TPL = @{
     sln     = "$($platform.path)\projects\tpl\Solutions\3PL Current Version.sln"
     client  = "$($platform.path)\projects\tpl\Client"
     logs    = "C:\Applications\operadorlogistico\logs"
-    info    = "$($ndd.path)\Operador"
 }
 
 $ClientTpl = @{
@@ -54,19 +52,26 @@ $Omp = @{
     fileTheme   = "$projetos\MyThemesOnOhMyPosh\godShell.omp.json"
 }
 
+$MoveInator = @{
+    path    = "$projetos\MoveInator"
+    sln     = "$projetos\MoveInator\MoveInator.sln"
+}
+
 $lagPS = @{
     path = 'C:\PowerShell'
 }
 
 $ndd = @{
-    path = 'C:\Ndd'
+    path    = 'C:\Ndd'
+    cargo   = "$($ndd.path)\cargo"
+    tpl     = "$($ndd.path)\Operador"
+    move    = "$($ndd.path)\move"
 }
 
 $polaris = @{
     path    = "$projetos\Polaris" 
     client  = "$projetos\Polaris\projects\core\client"
     sln     = "$projetos\Polaris\projects\core\server\NDDPolarisSolutionServer.sln"
-    info    = "$($ndd.path)\move"
 }
 
 $lagControl = @{
