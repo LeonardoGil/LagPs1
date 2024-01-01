@@ -69,57 +69,6 @@ function Invoke-Projects {
     } -p 'Windows PowerShell'
 }
 
-class Projeto {
-    [string] $path    
-    [string] $sln
-
-    Projeto ([string]$path, [string]$sln) {
-        $this.path = $path;
-        $this.sln = $sln;
-    }
-}
-
-function Set-Projeto-Variable {
-    
-    # .SYNOPSIS 
-    # Defini as váriaveis de Projeto no ambiente local.
-
-    param (        
-        [Parameter()]
-        [string]$pathProject,
-
-        [Parameter()]
-        [string]$nameVariable
-    )
-
-    if ([string]::IsNullOrEmpty($pathProject)) {
-        $pathProject = Get-Location;
-    }
-    elseif (!Test-Path $pathProject) {
-        Write-Error "Caminho inválido.";
-        Write-Error "Operação Cancelada.";
-        return;
-    }
-
-    $solutions = Get-ChildItem -Path $pathProject -Recurse -Filter '*.sln' -File;
-
-    if (($solutions | Measure-Object).Count -eq 0) {
-        Write-Error "Arquivo .sln não encontrado.";
-        Write-Error "Operação Cancelada.";
-        return;
-    }
-
-    $project = [Projeto]::new($pathProject, ($solutions | Select-Object -First 1).DirectoryName);
-
-    if ([string]::IsNullOrEmpty($nameVariable)) {
-        $nameVariable = [System.IO.DirectoryInfo]::new($pathProject).BaseName;
-    }
-
-    Set-Variable -Name $nameVariable -Value $project;
-
-    Write-Output $"Variavel $($nameVariable) inputado."
-}
-
 function Get-Logs-Files {
 
     # .SYNOPSIS 
@@ -153,7 +102,7 @@ function Get-Logs-Files {
     return $files;
 }
 
-function Docker-Lag {
+function Restore-Docker-TPL {
     $actual = Get-Location
 
     Set-Location -Path $tpl.path
@@ -164,12 +113,12 @@ function Docker-Lag {
     Set-Location -Path $actual
 }
 
-function Lag-Client-TPL {
+function Initialize-Client-TPL {
     Set-Location -Path $platform.Path;
     ndk run 'client-tpl';
 }
 
-function Lag-TPL {
+function Initialize-TPL {
     Set-Location -Path $platform.Path;
     ndk run 'tpl';
 }
@@ -179,7 +128,7 @@ function UpdateInator {
     .\updatinator.exe
 }
 
-function Autentication-Portal {
+function Get-Token-Portal {
     $body = @{
         grant_type='client_credentials'
         client_id='7afbb7b3a0ab4ede893e2f9490e9ffcf'
@@ -199,8 +148,7 @@ function Autentication-Portal {
     Write-Output "Token Gerado: $($bearer)"
 }
 
-
-function Autentication-Mobile {
+function Get-Token-Mobile {
     $body = @{
         client_id='3b9a77fb35a54e40815f4fa8641234c5'
         grant_type='password'
