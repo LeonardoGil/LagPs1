@@ -1,4 +1,4 @@
-Import-Module -Name "C:\Projetos\LagPS\NddLibrary.ps1";
+Import-Module -Name "C:\Projetos\LagPS\LagNddLibrary.ps1";
 Import-Module -Name "C:\Projetos\LagPS\LagVariableLibrary.ps1";
 
 # PSReadLine
