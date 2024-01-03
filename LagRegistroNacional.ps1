@@ -4,12 +4,10 @@ function Get-CPF-Aleatorio() {
 
     # Gera um CPF Aleatorio (sem o Digito Verificador) 
     for ($i = 0; $i -lt 9; $i++) {
-        $number = $random.Next(1, 10);
+        $number = $random.Next(0, 9);
 
         $cpf = -join($cpf, $number);
     }
-
-    Write-Output "CPF sem Digito Verificado: $cpf"
 
     $digitoVerificador = Get-Digito-Verificador $cpf 11;
 
@@ -44,14 +42,11 @@ function Get-Digito-Verificador() {
     $multi = 2;
     $soma = 0;
 
-    for ($i = ($reverseString.Length - 1); ($i -ge 0); $i--) {
-        
+    for ($i = 0; $i -lt $arrayString.Length; $i++) {
         # Converte o caracter em inteiro
         $number = [int]::Parse($reverseString[$i].ToString());
-
         # Incrementa a Soma com valor calculado (Numero x Multiplicador)
         $soma = $soma + ($number * $multi);
-
         # 11 Peso máximo do Mod11 
         if ($multi -ge $peso) {
             # Reseta o Multiplicador para valor inicial
