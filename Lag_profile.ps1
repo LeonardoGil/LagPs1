@@ -2,6 +2,8 @@ Import-Module -Name "C:\Projetos\LagPS\LagNddLibrary.ps1";
 Import-Module -Name "C:\Projetos\LagPS\LagVariableLibrary.ps1";
 Import-Module -Name "C:\Projetos\LagPS\LagRegistroNacional.ps1";
 
+Push-Lag-Variables-File
+
 # PSReadLine
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward

@@ -73,19 +73,52 @@ function Add-Lag-Variable {
         $Key,
 
         # Valor da Variavel
-        [Parameter(Mandatory, Position=2)]
+        [Parameter(Mandatory, Position=1)]
         [System.Object]
         $Value
     )
 
     try {
-        Write-Verbose "Add Variable: $key"
+        Write-Verbose "Add Variable: $key";
         New-Variable -Name $Key -Value $Value -Scope Global;
+        
+        # Grava o nome da Variavel numa lista temporaria
+        Push-Lag-Variables-Temp $Key -ErrorAction SilentlyContinue;
     }
     catch [System.Exception] {
         Write-Error 'Ocorreu um erro inesperado!'
         Write-Error $_.Exception.Message;
     }
+}
 
-    Write-Verbose 'Variables Ok!';
+<#
+    .Synopsis
+       Adiciona o nome da Variavel Lag numa lista temporária
+    .DESCRIPTION
+       Adiciona o nome da Variavel Lag na lista: LagVariablesTemp
+       Será criado uma nova lista caso a Variavel não exista
+       Recomendo utilizar com -ErrorAction SilentlyContinue devido a mensagem
+       de VariableNOTFOUND
+    .EXAMPLE
+       Push-Lag-Variables-Temp 'Teste' -ErrorAction SilentlyContinue;}
+#>
+function Push-Lag-Variables-Temp {
+
+    param(
+        [Parameter(Mandatory, Position=0)]
+        [string]
+        $variableName
+    )
+
+    try {
+        $variablesTemp = Get-Variable -Name 'LagVariablesTemp';
+        $variablesTemp.Value += $variableName;
+
+        Write-Verbose 'Update LagVariablesTemp'
+        Set-Variable -Name 'LagVariablesTemp' -Value $variablesTemp.Value -Scope Global;
+    }
+    catch [System.Exception] {
+        Write-Verbose 'Add LagVariablesTemp'
+        new-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global;
+    }
 }
