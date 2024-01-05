@@ -36,3 +36,53 @@ function Get-Token-Mobile {
 
     Write-Output "Token Gerado: $($bearer)"
 }
+
+function Out-Integration-Adicionar-Entrega {
+    param (
+        # Numero Viagem
+        [Parameter(Mandatory, Position=0)]
+        [string]
+        $numeroViagem,
+
+        # CNPJ Emissor
+        [Parameter(Mandatory, Position=1)]
+        [string]
+        $cnpjEmissor,
+
+        # Serie Documento
+        [Parameter(Mandatory, Position=2)]
+        [int]
+        $serieDocumento,
+
+        # Numero Documento
+        [Parameter(Mandatory, Position=3)]
+        [int]
+        $numeroDocumento
+    )
+
+    $adicionarEntregaModel = @{
+        NumeroViagem = $numeroViagem
+        CnpjEmissor = $cnpjEmissor
+
+        ChaveAcesso = [string]::Empty
+        NomeDestinatario = 'Leonardo'
+        CnpjDestinatario = '30265543000100'
+
+        Logradouro = 'Rua LAG'
+        Numero = 123
+        Bairro = 'Bairro LAG'
+        Municipio = 'Municipio LAG'
+        Cep = '88200000'
+        Uf = 'SC'
+    }
+
+    $cnpjEmissorLong = [long]::Parse($cnpjEmissor);
+
+    $adicionarEntregaModel.ChaveAcesso = Out-Chave-Acesso 55 1 24 $cnpjEmissorLong $serieDocumento $numeroDocumento
+
+    $outModel = $adicionarEntregaModel | ConvertTo-Json -Depth 4;
+
+    Write-Output $outModel;
+
+    Set-Clipboard $outModel;
+}
