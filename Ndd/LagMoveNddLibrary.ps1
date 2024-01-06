@@ -60,25 +60,28 @@ function Out-Integration-Adicionar-Entrega {
         $numeroDocumento
     )
 
+    $cnpjEmissorLong = [long]::Parse($cnpjEmissor);
+
+    $chaveAcesso = Out-Chave-Acesso 55 1 24 $cnpjEmissorLong $serieDocumento $numeroDocumento
+
     $adicionarEntregaModel = @{
         NumeroViagem = $numeroViagem
         CnpjEmissor = $cnpjEmissor
+        Entregas = @(
+            @{
+                ChaveAcesso = $chaveAcesso
+                NomeDestinatario = 'Leonardo'
+                CnpjDestinatario = '30265543000100'
 
-        ChaveAcesso = [string]::Empty
-        NomeDestinatario = 'Leonardo'
-        CnpjDestinatario = '30265543000100'
-
-        Logradouro = 'Rua LAG'
-        Numero = 123
-        Bairro = 'Bairro LAG'
-        Municipio = 'Municipio LAG'
-        Cep = '88200000'
-        Uf = 'SC'
+                Logradouro = 'Rua LAG'
+                Numero = 123
+                Bairro = 'Bairro LAG'
+                Municipio = 'Municipio LAG'
+                Cep = '88200000'
+                Uf = 'SC'
+            }
+        )
     }
-
-    $cnpjEmissorLong = [long]::Parse($cnpjEmissor);
-
-    $adicionarEntregaModel.ChaveAcesso = Out-Chave-Acesso 55 1 24 $cnpjEmissorLong $serieDocumento $numeroDocumento
 
     $outModel = $adicionarEntregaModel | ConvertTo-Json -Depth 4;
 
