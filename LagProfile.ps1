@@ -12,6 +12,9 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadlineOption -HistorySearchCursorMovesToEnd
 Set-PSReadlineOption -ShowToolTips
 
+# Alias
+New-Alias -Name 'ex' explorer;
+
 function Initialize-Lag {
     Push-Lag-Variables-File;
     
