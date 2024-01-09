@@ -4,6 +4,8 @@ Import-Module -Name "C:\Projetos\LagPS\LagVariableLibrary.ps1";
 Import-Module -Name "C:\Projetos\LagPS\LagRegistroNacional.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveNddLibrary.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagThirdPartyLogisticNddLibrary.ps1";
+Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveIntegrationNddLibrary.ps1";
+
 
 # PSReadLine
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
