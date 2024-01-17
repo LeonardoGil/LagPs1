@@ -96,6 +96,32 @@ function Out-CPF-Aleatorio() {
     Set-Clipboard $cpf
 }
 
+function Out-CNPJ-Aleatorio() {
+    $random = [System.Random]::new();
+    $cnpj = [string]::Empty;
+
+    # Gera um cnpj Aleatorio (sem o Digito Verificador) 
+    for ($i = 0; $i -lt 8; $i++) {
+        $number = $random.Next(0, 9);
+
+        $cnpj = -join ($cnpj, $number);
+    }
+
+    $cnpj += "0001"
+
+    $digitoVerificador = Get-Digito-Verificador $cnpj 11;
+
+    $cnpj = -join ($cnpj, $digitoVerificador);
+
+    $digitoVerificador = Get-Digito-Verificador $cnpj 11;
+
+    $cnpj = -join ($cnpj, $digitoVerificador);
+
+    Write-Output "cnpj: $cnpj";
+
+    Set-Clipboard $cpf
+}
+
 function Get-Digito-Verificador() {
     param(
         [Parameter(Mandatory, Position = 0)]
