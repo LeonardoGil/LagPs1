@@ -109,11 +109,11 @@ function Out-CNPJ-Aleatorio() {
 
     $cnpj += "0001"
 
-    $digitoVerificador = Get-Digito-Verificador $cnpj 11;
+    $digitoVerificador = Get-Digito-Verificador $cnpj 9;
 
     $cnpj = -join ($cnpj, $digitoVerificador);
 
-    $digitoVerificador = Get-Digito-Verificador $cnpj 11;
+    $digitoVerificador = Get-Digito-Verificador $cnpj 9;
 
     $cnpj = -join ($cnpj, $digitoVerificador);
 
