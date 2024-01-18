@@ -155,7 +155,7 @@ function Save-Lag-Variables-File {
         }
     }
 
-    if ($LagVariablesTemp -eq $null)
+    if ($null -eq $LagVariablesTemp)
     {
         Write-Output "Não possui variaveis lag para salvar"
         return;
