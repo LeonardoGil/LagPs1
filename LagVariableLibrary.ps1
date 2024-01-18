@@ -1,3 +1,5 @@
+using namespace System.IO;
+
 <#
     .Synopsis
        Adiciona as Variaveis conforme o arquivo .Lag
@@ -121,4 +123,54 @@ function Push-Lag-Variables-Temp {
         Write-Verbose 'Add LagVariablesTemp'
         new-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global;
     }
+}
+
+<#
+    .SYNOPSIS
+       Gera o arquivo .Lag com base na variables Lag adicionada
+    .DESCRIPTION
+       Gera um arquivo no estilo JSON com nome .Lag com as Variaveis adicionais
+       com o comando Add-Lag-Variable (Pode consultar a variavel $LagVariablesTemp)
+       no diretório informado
+#>
+function Save-Lag-Variables-File {
+    param(
+        [Parameter(Position=0)]
+        [string]
+        $directory
+    )
+
+    $ErrorActionPreference = "Stop"
+
+    if ([string]::IsNullOrEmpty($directory)) 
+    {
+        $directory = Get-Location
+    }
+    else
+    {
+        if (-not (Test-Path $directory))
+        {
+            Write-Error 'Diretório nao encontrado!'
+            return;
+        }
+    }
+
+    if ($LagVariablesTemp -eq $null)
+    {
+        Write-Output "Não possui variaveis lag para salvar"
+        return;
+    }
+
+    $path = [Path]::Combine($directory, '.Lag');
+    $lag = @{};
+
+    foreach ($var in $LagVariablesTemp)
+    {
+        $lagVariable = Get-Variable -Name $var
+        $lag.Add($lagVariable.Name, $lagVariable.Value)
+    }
+
+    $json = $lag | ConvertTo-Json;
+    
+    New-Item -Path $path -Value $json;
 }
