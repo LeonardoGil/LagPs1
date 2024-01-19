@@ -41,7 +41,10 @@ function Start-Lag-App {
         $Queue,
 
         [switch]
-        $Binzinho
+        $Binzinho,
+
+        [switch]
+        $inator
     )
 
     if ($PowerShellSeven) { Start-Process "$($env:ProgramFiles)\powershell\7\pwsh.exe"; }
@@ -53,6 +56,8 @@ function Start-Lag-App {
     if ($Queue) { Start-Process "$(${env:ProgramFiles(x86)})\Jarbas\QueueViewer\QueueViewer.exe"; }
 
     if ($Binzinho) { Start-Process "$(${env:ProgramFiles(x86)})\Bodega\BinKiller\BinKiller.exe"; }
+
+    if ($inator) { Start-Process "$($ndd.move)\MoveInator\MoveInatorForms.exe"; }
 }
 
 Initialize-Lag
