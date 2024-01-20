@@ -5,7 +5,7 @@ Import-Module -Name "C:\Projetos\LagPS\LagRegistroNacional.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveNddLibrary.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagThirdPartyLogisticNddLibrary.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveIntegrationNddLibrary.ps1";
-
+Import-Module -Name Terminal-Icons
 
 # PSReadLine
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
@@ -15,7 +15,8 @@ Set-PSReadlineOption -HistorySearchCursorMovesToEnd
 Set-PSReadlineOption -ShowToolTips
 
 # Alias
-New-Alias -Name 'ex' explorer;
+New-Alias -Name 'ex' -Value explorer;
+new-Alias -Name 'ldir' -Value Get-Lag-ChildItem;
 
 function Initialize-Lag {
     Push-Lag-Variables-File;
@@ -58,6 +59,10 @@ function Start-Lag-App {
     if ($Binzinho) { Start-Process "$(${env:ProgramFiles(x86)})\Bodega\BinKiller\BinKiller.exe"; }
 
     if ($inator) { Start-Process "$($ndd.move)\MoveInator\MoveInatorForms.exe"; }
+}
+
+function Get-Lag-ChildItem {
+    (Get-ChildItem) | Select-Object -Property BaseName, CreationTime, Extension
 }
 
 Initialize-Lag
