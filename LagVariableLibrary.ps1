@@ -41,19 +41,21 @@ function Get-Lag-Variables-File {
     )
 
     $file = '.lag';
-    $filePath = [string]::Concat($path, '/', $file);
+    $filePath = [Path]::Combine($path, $file);
     
     if (-not (Test-Path $filePath)) {
-        Write-Error 'Arquivo .lag nao Localizado!'
+        Write-Error 'File .lag not Found!'
         return;
     }
 
     try {
         Write-Verbose 'Get File Text and Convert to PSCustomObject'
+        New-Variable -Name 'LagFilePath' -Value $filePath -Scope Global;
+
         return [System.IO.File]::ReadAllText($filePath) | ConvertFrom-Json;
     }
     catch {
-        Write-Error 'Ocorreu um erro inesperado!'
+        Write-Error 'An unexpected error Occurred';
         Write-Error $_.Exception.Message;
         throw $_;
     }
@@ -77,7 +79,11 @@ function Add-Lag-Variable {
         # Valor da Variavel
         [Parameter(Mandatory, Position=1)]
         [System.Object]
-        $Value
+        $Value,
+
+        [Parameter()]
+        [switch]
+        $UpdateFile
     )
 
     try {
@@ -85,7 +91,14 @@ function Add-Lag-Variable {
         New-Variable -Name $Key -Value $Value -Scope Global;
         
         # Grava o nome da Variavel numa lista temporaria
-        Push-Lag-Variables-Temp $Key -ErrorAction SilentlyContinue;
+        Push-Lag-Variables-Temp $Key;
+
+        if ($UpdateFile -and (Test-Path $LagFilePath)) 
+        {
+            Remove-Item -Path $LagFilePath -Force;
+
+            [Path]::GetDirectoryName($LagFilePath) | Save-Lag-Variables-File
+        }
     }
     catch [System.Exception] {
         Write-Error 'Ocorreu um erro inesperado!'
@@ -113,7 +126,7 @@ function Push-Lag-Variables-Temp {
     )
 
     try {
-        $variablesTemp = Get-Variable -Name 'LagVariablesTemp';
+        $variablesTemp = Get-Variable -Name 'LagVariablesTemp' -ErrorAction SilentlyContinue;
         $variablesTemp.Value += $variableName;
 
         Write-Verbose 'Update LagVariablesTemp'
@@ -135,7 +148,7 @@ function Push-Lag-Variables-Temp {
 #>
 function Save-Lag-Variables-File {
     param(
-        [Parameter(Position=0)]
+        [Parameter(Position=0, ValueFromPipeline)]
         [string]
         $directory
     )
