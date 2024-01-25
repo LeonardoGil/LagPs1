@@ -1,4 +1,4 @@
-function Out-Chave-Acesso {
+function Get-Chave-Acesso {
     param (
         # Modelo
         [Parameter(Mandatory, Position = 0)]
@@ -72,7 +72,7 @@ function Out-Chave-Acesso {
     return $chaveAcesso;
 }
 
-function Out-CPF-Aleatorio() {
+function Get-CPF-Aleatorio() {
     $random = [System.Random]::new();
     $cpf = [string]::Empty;
 
@@ -96,7 +96,7 @@ function Out-CPF-Aleatorio() {
     Set-Clipboard $cpf
 }
 
-function Out-CNPJ-Aleatorio() {
+function Get-CNPJ-Aleatorio() {
     $random = [System.Random]::new();
     $cnpj = [string]::Empty;
 

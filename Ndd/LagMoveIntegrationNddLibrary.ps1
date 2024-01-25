@@ -1,4 +1,4 @@
-function Out-Integration-Adicionar-Entrega {
+function Get-Integration-Add-Entrega-Json {
     param (
         # Numero Viagem
         [Parameter(Mandatory, Position=0)]
@@ -23,7 +23,7 @@ function Out-Integration-Adicionar-Entrega {
 
     $cnpjEmissorLong = [long]::Parse($cnpjEmissor);
 
-    $chaveAcesso = Out-Chave-Acesso 55 1 24 $cnpjEmissorLong $serieDocumento $numeroDocumento
+    $chaveAcesso = Get-Chave-Acesso 55 1 24 $cnpjEmissorLong $serieDocumento $numeroDocumento
 
     $adicionarEntregaModel = @{
         NumeroViagem = $numeroViagem
@@ -74,7 +74,7 @@ function Push-Integration-Adicionar-Entrega-Local {
 
     $cnpjEmissor = '30265543000100';
 
-    $body = Out-Integration-Adicionar-Entrega $numeroViagem $cnpjEmissor $serieDocumento $numeroDocumento;
+    $body = Get-Integration-Add-Entrega-Json $numeroViagem $cnpjEmissor $serieDocumento $numeroDocumento;
 
     $header = @{
         Authorization = Get-Token-Portal
