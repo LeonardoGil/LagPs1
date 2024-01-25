@@ -91,9 +91,9 @@ function Get-CPF-Aleatorio() {
 
     $cpf = -join ($cpf, $digitoVerificador);
 
-    Write-Output "CPF: $cpf";
+    Set-Clipboard -Value $cpf
 
-    Set-Clipboard $cpf
+    Write-Output "CPF: $cpf";
 }
 
 function Get-CNPJ-Aleatorio() {
@@ -117,9 +117,9 @@ function Get-CNPJ-Aleatorio() {
 
     $cnpj = -join ($cnpj, $digitoVerificador);
 
-    Write-Output "cnpj: $cnpj";
+    Set-Clipboard -Value $cnpj
 
-    Set-Clipboard $cpf
+    Write-Output "cnpj: $cnpj";
 }
 
 function Get-Digito-Verificador() {
