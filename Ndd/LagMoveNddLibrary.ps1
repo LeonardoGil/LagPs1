@@ -55,3 +55,38 @@ function Get-Token-Mobile {
 
     return $bearer;
 }
+
+function Load-Certificates {
+    
+    $certificates = @("identity-cert.pfx", "identity-root-cert.cer", "identity-root-cert.crt");
+    
+    $certBackupPath = "$($Ndd.Move)/Certificados Identity/*";    
+    $certBackup = Get-ChildItem -Path $certBackupPath -Include $certificates;
+    
+    if ($certBackup.Length -le 2) 
+    {
+        Write-Output 'Não foi encontrado todos os certificados necessários';
+        return;
+    }
+
+    $certActualPath = "$($Polaris.Path)/configs/identity/*";
+    $certActual = Get-ChildItem -Path $certActualPath -Include $certificates;
+
+    if ($certActual.Length -ge 1)
+    {
+        $maxBackupDate = $certBackup | Measure-Object -Property LastAccessTime -Maximum;
+        $maxActualDate = $certActual | Measure-Object -Property LastAccessTime -Maximum;
+    
+        if ($maxActualDate.Maximum -gt $maxBackupDate.Maximum)
+        {
+            Write-Output 'Certificados do Backup estão desatualizados!';
+            return;
+        }
+    }
+
+    Remove-Item -Path $certActualPath -Include $certificates -Force;
+    
+    Copy-Item -Path $certBackupPath -Include $certificates -Destination "$($Polaris.Path)/configs/identity";
+
+    Write-Output 'Certificados atualizados!';
+}
