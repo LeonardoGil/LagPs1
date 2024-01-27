@@ -56,7 +56,7 @@ function Get-Token-Mobile {
     return $bearer;
 }
 
-function Load-Certificates {
+function Set-Certificates {
     
     $certificates = @("identity-cert.pfx", "identity-root-cert.cer", "identity-root-cert.crt");
     
