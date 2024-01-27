@@ -2,9 +2,9 @@
 # Imports 
 Import-Module -Name "C:\Projetos\LagPS\LagVariableLibrary.ps1";
 Import-Module -Name "C:\Projetos\LagPS\LagRegistroNacional.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveNddLibrary.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagThirdPartyLogisticNddLibrary.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\LagMoveIntegrationNddLibrary.ps1";
+Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveNddLibrary.ps1";
+Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagThirdPartyLogisticNddLibrary.ps1";
+Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveIntegrationNddLibrary.ps1";
 Import-Module -Name Terminal-Icons
 
 # PSReadLine
