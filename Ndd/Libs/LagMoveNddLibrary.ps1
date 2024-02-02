@@ -90,3 +90,19 @@ function Set-Certificates {
 
     Write-Output 'Certificados atualizados!';
 }
+
+function Connect-Polaris3 {
+    Clear-Host;
+
+    $key = "C:\Ndd\Move\SSH Ambientes\Lonestar3.ppk";
+
+    if (-not (Test-Path $key)) {
+        Write-Output 'Chave .ppk não encontrada!';
+        return;
+    }
+
+    Write-Host 'Conectando Polaris 3' -ForegroundColor Green;
+    Write-Host 'Seja bem vindo BigBoss' -ForegroundColor Green;
+
+    plink -ssh -i $key 'polaris@172.210.57.148';
+}
