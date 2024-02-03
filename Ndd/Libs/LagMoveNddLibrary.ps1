@@ -91,18 +91,28 @@ function Set-Certificates {
     Write-Output 'Certificados atualizados!';
 }
 
-function Connect-Polaris3 {
-    Clear-Host;
+function Connect-Polaris {
+    param (
+        [Parameter(Position = 0, ValueFromPipeline)]
+        [string]
+        $username,
 
-    $key = "C:\Ndd\Move\SSH Ambientes\Lonestar3.ppk";
+        [Parameter(Position = 1, ValueFromPipeline)]
+        [string]
+        $ip,
 
+        [Parameter(Position = 2, ValueFromPipeline)]
+        [string]
+        $key
+    )
+    
     if (-not (Test-Path $key)) {
         Write-Output 'Chave .ppk não encontrada!';
         return;
     }
 
-    Write-Host 'Conectando Polaris 3' -ForegroundColor Green;
-    Write-Host 'Seja bem vindo BigBoss' -ForegroundColor Green;
+    Clear-Host;
 
-    plink -ssh -i $key 'polaris@172.210.57.148';
+    Write-Host 'Conectando na maquina' -ForegroundColor Green;
+    plink -ssh -i $key "$user@$ip";
 }
