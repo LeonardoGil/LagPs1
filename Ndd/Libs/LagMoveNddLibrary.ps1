@@ -103,9 +103,29 @@ function Connect-Polaris {
 
         [Parameter(Position = 2, ValueFromPipeline)]
         [string]
-        $key
+        $key,
+
+        [switch]
+        $lone1, 
+        
+        [switch]
+        $lone3
     )
     
+    if ($lone1) 
+    {
+        $username = 'lonestar';
+        $ip = '20.55.122.52';
+        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar1.ppk'
+    }
+    elseif ($lone3) {
+        $username = 'polaris';
+        $ip = '172.210.57.148';
+        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar3.ppk'
+    }
+
+    if ([string]::IsNullOrEmpty($ip)) { Write-Output 'Necessário informar um Ip!'; return; }
+
     if (-not (Test-Path $key)) {
         Write-Output 'Chave .ppk não encontrada!';
         return;
@@ -114,5 +134,5 @@ function Connect-Polaris {
     Clear-Host;
 
     Write-Host 'Conectando na maquina' -ForegroundColor Green;
-    plink -ssh -i $key "$user@$ip";
+    plink -ssh -i $key "$username@$ip";
 }
