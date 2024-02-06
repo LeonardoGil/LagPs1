@@ -112,6 +112,9 @@ function Connect-Polaris {
         $lone1, 
 
         [switch]
+        $lone2, 
+
+        [switch]
         $lone3
     )
     
@@ -119,6 +122,11 @@ function Connect-Polaris {
         $username = 'lonestar';
         $ip = '20.55.122.52';
         $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar1.ppk'
+    }
+    elseif ($lone2) {
+        $username = 'lonestar';
+        $ip = '172.203.236.130';
+        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar2.ppk'
     }
     elseif ($lone3) {
         $username = 'polaris';
