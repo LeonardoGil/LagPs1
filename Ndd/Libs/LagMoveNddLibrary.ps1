@@ -68,25 +68,6 @@ function Set-Certificates {
 
     $certActualPath = "$($Polaris.Path)/configs/identity/*";
     
-    # Removido temporariamente
-    # Validação devo ocorrer apenas quando os certificados forem Untracked
-
-    <#    
-        $certActual = Get-ChildItem -Path $certActualPath -Include $certificates;
-
-        if ($certActual.Length -ge 1)
-        {
-            $maxBackupDate = $certBackup | Measure-Object -Property LastAccessTime -Maximum;
-            $maxActualDate = $certActual | Measure-Object -Property LastAccessTime -Maximum;
-        
-            if ($maxActualDate.Maximum -gt $maxBackupDate.Maximum)
-            {
-                Write-Output 'Certificados do Backup estão desatualizados!';
-                return;
-            }
-        }
-    #>
-
     Remove-Item -Path $certActualPath -Include $certificates -Force;
     
     Copy-Item -Path $certBackupPath -Include $certificates -Destination "$($Polaris.Path)/configs/identity";
