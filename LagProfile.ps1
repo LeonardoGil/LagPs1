@@ -6,6 +6,7 @@ Import-Module -Name "C:\Projetos\LagPS\LagPermissions.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveNddLibrary.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagThirdPartyLogisticNddLibrary.ps1";
 Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveIntegrationNddLibrary.ps1";
+Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveRabbitMqNddLibrary.ps1";
 Import-Module -Name Terminal-Icons
 
 # PSReadLine
