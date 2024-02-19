@@ -3,8 +3,12 @@ using namespace System.Text;
 
 # Configurações RabbitMQ
 $rabbitUrl =        "http://localhost:15672";
+$rabbitApiUrl =     "${rabbitUrl}/api";
+
+# Autenticação
 $rabbitBase64Auth = [Convert]::ToBase64String([Encoding]::ASCII.GetBytes("guest:guest"));
 $credential =       @{ Authorization = "Basic $rabbitBase64Auth" }
+
 $disregardList =        @('nsb.delay*');
 
 class LagQueue {
@@ -14,6 +18,24 @@ class LagQueue {
     [string] $vHost
 
     static [string] $vHostDefault = '%2f'
+}
+
+function Get-RabbitQueueMessages {
+    param (
+        [Parameter(Mandatory)]
+        [string]
+        $nameQueue
+    )
+
+    $body = @{
+        ackmode  = "ack_requeue_true"
+        encoding = "auto"            
+        count  = 20  
+    } | ConvertTo-Json
+
+    $url = "$rabbitApiUrl/queues/$([LagQueue]::vHostDefault)/$nameQueue/get";
+
+    Invoke-RestMethod -Uri $url -Headers $credential -Method Post -Body $body -ContentType "application/json";
 }
 
 function Get-RabbitQueues() {
@@ -52,4 +74,4 @@ function Get-RabbitQueues() {
 
 function Get-RabbitOverview() {
     Invoke-RestMethod -Uri "${rabbitUrl}/api/overview" -Headers $credential -Method Get;   
-}
+}   
