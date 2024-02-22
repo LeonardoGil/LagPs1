@@ -24,7 +24,10 @@ Set-PSReadlineOption -ShowToolTips
 New-Alias -Name 'ex' -Value explorer;
 
 function Initialize-Lag {
-    # Push-Lag-Variables-File;
+    # Load the lag Variables for session
+    Push-LagVariablesFile
+    
+    # Load Theme of Oh-my-Posh
     # oh-my-posh init pwsh --config "C:\Projetos\MyThemesOnOhMyPosh\godShell.omp.json" | Invoke-Expression;
     
     Write-Host "Terminal ON FIREEE" -ForegroundColor Red;
