@@ -6,9 +6,9 @@ using namespace System.IO;
     .DESCRIPTION
        Converte o arquivo .Lag em Variaveis Globais para serem utilizadas no contexto atual
     .EXAMPLE
-       Push-Lag-Variables-File
+       Push-LagVariablesFile
 #>
-function Push-Lag-Variables-File {
+function Push-LagVariablesFile {
 
     param ( 
         [Parameter(Position=0)]
@@ -20,9 +20,9 @@ function Push-Lag-Variables-File {
         $Path = $Home;
     }
 
-    $variables = Get-Lag-Variables-File -Path $Path;
+    $variables = Get-LagVariablesFile -Path $Path;
 
-    $variables.psobject.properties | ForEach-Object { Add-Lag-Variable $_.Name $_.Value; }
+    $variables.psobject.properties | ForEach-Object { Add-LagVariable $_.Name $_.Value; }
 }
 
 <#
@@ -31,9 +31,9 @@ function Push-Lag-Variables-File {
     .DESCRIPTION
        Converte o arquivo .Lag em um PSCustomObject
     .EXAMPLE
-       Get-Lag-Variables-File -Path "C:\temp"
+       Get-LagVariablesFile -Path "C:\temp"
 #>
-function Get-Lag-Variables-File {
+function Get-LagVariablesFile {
     param ( 
         [Parameter(Mandatory)]
         [string]
@@ -67,9 +67,9 @@ function Get-Lag-Variables-File {
     .DESCRIPTION
        Adiciona PSCustomObject como Variavel no Contexto Global
     .EXAMPLE
-       Add-Lag-Variable 'Projetos' 'C:\Projetos' }
+       Add-LagVariable 'Projetos' 'C:\Projetos' }
 #>
-function Add-Lag-Variable {
+function Add-LagVariable {
     param (
         # Nome da Variavel
         [Parameter(Mandatory, Position=0)]
@@ -91,13 +91,13 @@ function Add-Lag-Variable {
         New-Variable -Name $Key -Value $Value -Scope Global;
         
         # Grava o nome da Variavel numa lista temporaria
-        Push-Lag-Variables-Temp $Key;
+        Push-LagVariablesTemp $Key;
 
         if ($UpdateFile -and (Test-Path $LagFilePath)) 
         {
             Remove-Item -Path $LagFilePath -Force;
 
-            [Path]::GetDirectoryName($LagFilePath) | Save-Lag-Variables-File
+            [Path]::GetDirectoryName($LagFilePath) | Save-LagVariablesFile
         }
     }
     catch [System.Exception] {
@@ -115,9 +115,9 @@ function Add-Lag-Variable {
        Recomendo utilizar com -ErrorAction SilentlyContinue devido a mensagem
        de VariableNOTFOUND
     .EXAMPLE
-       Push-Lag-Variables-Temp 'Teste' -ErrorAction SilentlyContinue;}
+       Push-LagVariablesTemp 'Teste' -ErrorAction SilentlyContinue;}
 #>
-function Push-Lag-Variables-Temp {
+function Push-LagVariablesTemp {
 
     param(
         [Parameter(Mandatory, Position=0)]
@@ -143,10 +143,10 @@ function Push-Lag-Variables-Temp {
        Gera o arquivo .Lag com base na variables Lag adicionada
     .DESCRIPTION
        Gera um arquivo no estilo JSON com nome .Lag com as Variaveis adicionais
-       com o comando Add-Lag-Variable (Pode consultar a variavel $LagVariablesTemp)
+       com o comando Add-LagVariable (Pode consultar a variavel $LagVariablesTemp)
        no diretório informado
 #>
-function Save-Lag-Variables-File {
+function Save-LagVariablesFile {
     param(
         [Parameter(Position=0, ValueFromPipeline)]
         [string]
