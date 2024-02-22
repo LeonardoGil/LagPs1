@@ -1,12 +1,16 @@
+$psProjectPath = 'C:\Projetos\LagPs1\src'
 
-# Imports 
-Import-Module -Name "C:\Projetos\LagPS\LagVariableLibrary.ps1";
-Import-Module -Name "C:\Projetos\LagPS\LagRegistroNacional.ps1";
-Import-Module -Name "C:\Projetos\LagPS\LagPermissions.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveNddLibrary.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagThirdPartyLogisticNddLibrary.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveIntegrationNddLibrary.ps1";
-Import-Module -Name "C:\\Projetos\\LagPS\\Ndd\\Libs\\LagMoveRabbitMqNddLibrary.ps1";
+# Local Modules 
+Import-Module -Name "$psProjectPath\functions\LagVariableLibrary.ps1"
+Import-Module -Name "$psProjectPath\functions\LagRegistroNacional.ps1"
+Import-Module -Name "$psProjectPath\functions\LagPermissions.ps1"
+
+Import-Module -Name "$psProjectPath\works\Libs\LagMoveNddLibrary.ps1"
+Import-Module -Name "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
+Import-Module -Name "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
+Import-Module -Name "$psProjectPath\works\Libs\LagMoveRabbitMqNddLibrary.ps1"
+
+# Third-Party Modules
 Import-Module -Name Terminal-Icons
 
 # PSReadLine
@@ -18,12 +22,11 @@ Set-PSReadlineOption -ShowToolTips
 
 # Alias
 New-Alias -Name 'ex' -Value explorer;
-new-Alias -Name 'ldir' -Value Get-Lag-ChildItem;
+New-Alias -Name 'ldir' -Value Get-Lag-ChildItem;
 
 function Initialize-Lag {
-    Push-Lag-Variables-File;
-    
-    oh-my-posh init pwsh --config "C:\Projetos\MyThemesOnOhMyPosh\godShell.omp.json" | Invoke-Expression;
+    # Push-Lag-Variables-File;
+    # oh-my-posh init pwsh --config "C:\Projetos\MyThemesOnOhMyPosh\godShell.omp.json" | Invoke-Expression;
     
     Write-Host "Terminal ON FIREEE" -ForegroundColor Red;
     Write-Output "Bem vindo a base de controle.";
