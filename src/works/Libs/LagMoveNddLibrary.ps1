@@ -18,8 +18,8 @@ function Remove-ParticularSoftware {
 function Get-Token-Portal {
     $body = @{
         grant_type    = 'client_credentials'
-        client_id     = '7afbb7b3a0ab4ede893e2f9490e9ffcf'
-        client_secret = 'ibtwgrHna+thf+p9wkqdo7M250zyynUTwYXA72lPWC4='
+        client_id     = 'i-comprova-client-sdk'
+        client_secret = 'i-comprova-core-web-api-client-sdk'
     }
     
     $contentType = 'application/x-www-form-urlencoded' 
@@ -87,35 +87,13 @@ function Connect-Polaris {
 
         [Parameter(Position = 2, ValueFromPipeline)]
         [string]
-        $key,
-
-        [switch]
-        $lone1, 
-
-        [switch]
-        $lone2, 
-
-        [switch]
-        $lone3
+        $key
     )
     
-    if ($lone1) {
-        $username = 'lonestar';
-        $ip = '20.55.122.52';
-        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar1.ppk'
+    if ([string]::IsNullOrEmpty($ip)) { 
+        Write-Output 'Necessário informar um Ip!'; 
+        return; 
     }
-    elseif ($lone2) {
-        $username = 'lonestar';
-        $ip = '172.203.236.130';
-        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar2.ppk'
-    }
-    elseif ($lone3) {
-        $username = 'polaris';
-        $ip = '172.210.57.148';
-        $key = 'C:/Ndd/Move/SSH Ambientes/Lonestar3.ppk'
-    }
-
-    if ([string]::IsNullOrEmpty($ip)) { Write-Output 'Necessário informar um Ip!'; return; }
 
     if (-not (Test-Path $key)) {
         Write-Output 'Chave .ppk não encontrada!';
