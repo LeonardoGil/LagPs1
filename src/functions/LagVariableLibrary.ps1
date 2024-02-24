@@ -200,6 +200,11 @@ function New-LagVariable {
     
     $variable = @{}
     $continue = $true
+
+    if ($LagVariablesTemp -and (($LagVariablesTemp | Where-Object { $_ -like 'teste' }).Count -ne 0)) {
+        Write-Output 'Ja possui uma variavel com esse nome'
+        return;
+    }
     
     do {
         Write-Output 'Informe a Propriedade'
@@ -223,6 +228,11 @@ function New-LagVariable {
             }
         }
     } while ($continue)
+
+    if ($variable.Count -eq 0) {
+        Write-Host 'Evento cancelado'
+        return
+    }
 
     Add-LagVariable -Key $name -Value $variable
 }
