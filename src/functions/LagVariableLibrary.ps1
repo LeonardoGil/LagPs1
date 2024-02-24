@@ -187,3 +187,42 @@ function Save-LagVariablesFile {
     
     New-Item -Path $path -Value $json;
 }
+
+function New-LagVariable {
+    param(
+        [Parameter(Mandatory, Position=0)]
+        [string]
+        $name
+    )
+
+    $key = [string]::Empty
+    $value = [string]::Empty
+    
+    $variable = @{}
+    $continue = $true
+    
+    do {
+        Write-Output 'Informe a Propriedade'
+        $key = Read-Host
+
+        if ($key -eq [string]::Empty) {
+            Write-Output 'Processo interrompido (Key)'
+            $continue = $false
+        }
+        else {
+            Write-Output 'Informe o Valor'
+            $value = Read-Host
+
+            if ($value -eq [string]::Empty) {
+                Write-Output 'Processo interrompido (Valor)'
+                $continue = $false
+            }
+            else {
+                # Adiciona Propriedade e valor
+                $variable.Add($key, $value)
+            }
+        }
+    } while ($continue)
+
+    Add-LagVariable -Key $name -Value $variable
+}
