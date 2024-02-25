@@ -167,4 +167,11 @@ function Get-Digito-Verificador() {
     else {
         return 11 - $resto;
     }
-} 
+}
+
+$functionsToExport = @(
+    "Get-CPF-Aleatorio",
+    "Get-CNPJ-Aleatorio"
+)
+
+Export-ModuleMember -Function $functionsToExport
