@@ -236,3 +236,16 @@ function New-LagVariable {
 
     Add-LagVariable -Key $name -Value $variable
 }
+
+$functionsToExport = @(
+    # File 
+    "Push-LagVariablesFile",
+    "Get-LagVariablesFile",
+    "Save-LagVariablesFile"
+
+    # Variable
+    "Add-LagVariable",
+    "New-LagVariable"
+)
+
+Export-ModuleMember -Function $functionsToExport
