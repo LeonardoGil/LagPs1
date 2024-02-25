@@ -1,9 +1,8 @@
 $psProjectPath = 'C:\Projetos\LagPs1\src'
 
 # Local Modules 
-Import-Module -Name "$psProjectPath\functions\LagVariableLibrary.ps1"
-Import-Module -Name "$psProjectPath\functions\LagRegistroNacional.ps1"
-Import-Module -Name "$psProjectPath\functions\LagPermissions.ps1"
+Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1"
+Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1"
 
 Import-Module -Name "$psProjectPath\works\Libs\LagMoveNddLibrary.ps1"
 Import-Module -Name "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
