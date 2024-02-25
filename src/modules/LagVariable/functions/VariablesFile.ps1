@@ -10,19 +10,20 @@ function Push-LagVariablesFile {
        Push-LagVariablesFile
 #>
 
+    [CmdletBinding()]
     param ( 
-        [Parameter(Position=0)]
+        [Parameter(Position = 0)]
         [string]
         $Path
     )
 
     if ([string]::IsNullOrEmpty($path)) {
-        $Path = $Home;
+        $Path = $Home
     }
 
-    $variables = Get-LagVariablesFile -Path $Path;
+    $variables = Get-LagVariablesFile -Path $Path
 
-    $variables.psobject.properties | ForEach-Object { Add-LagVariable $_.Name $_.Value; }
+    $variables.psobject.properties | ForEach-Object { Add-LagVariable $_.Name $_.Value }
 }
 
 function Get-LagVariablesFile {
@@ -35,31 +36,29 @@ function Get-LagVariablesFile {
        Get-LagVariablesFile -Path "C:\temp"
 #>
 
+    [CmdletBinding()]
     param ( 
         [Parameter(Mandatory)]
         [string]
         $Path
     )
 
+    $ErrorActionPreference = 'Stop'
+
     $file = '.lag';
     $filePath = [Path]::Combine($path, $file);
     
     if (-not (Test-Path $filePath)) {
-        Write-Error 'File .lag not Found!'
+        Write-Host 'File .lag not Found' -ForegroundColor Red
+        Write-Host 'Operation Canceled' -ForegroundColor Red
         return;
     }
+    
+    Write-Verbose 'Get File Text and Convert to PSCustomObject'
+    New-Variable -Name 'LagFilePath' -Value $filePath -Scope Global;
 
-    try {
-        Write-Verbose 'Get File Text and Convert to PSCustomObject'
-        New-Variable -Name 'LagFilePath' -Value $filePath -Scope Global;
-
-        return [System.IO.File]::ReadAllText($filePath) | ConvertFrom-Json;
-    }
-    catch {
-        Write-Error 'An unexpected error Occurred';
-        Write-Error $_.Exception.Message;
-        throw $_;
-    }
+    return [System.IO.File]::ReadAllText($filePath) | ConvertFrom-Json;
+    
 }
 
 function Save-LagVariablesFile {
@@ -72,43 +71,38 @@ function Save-LagVariablesFile {
        no diretório informado
 #>
 
+    [CmdletBinding()]
     param(
-        [Parameter(Position=0, ValueFromPipeline)]
+        [Parameter(Position = 0, ValueFromPipeline)]
         [string]
         $directory = (Get-Location)
     )
 
-    $ErrorActionPreference = "Stop"
+    $ErrorActionPreference = 'Stop'
 
-    if ([string]::IsNullOrEmpty($directory)) 
-    {
+    if ([string]::IsNullOrEmpty($directory)) {
         $directory = Get-Location
     }
-    else
-    {
-        if (-not (Test-Path $directory))
-        {
-            Write-Error 'Diretório nao encontrado!'
-            return;
-        }
+    elseif (-not (Test-Path $directory)) {
+        Write-Host 'Directory not found' -ForegroundColor Red
+        return
+    }
+    
+    if ($null -eq $LagVariablesTemp) {
+        Write-Host "LagVariablesTemp does not exist" -ForegroundColor Yellow
+        return
     }
 
-    if ($null -eq $LagVariablesTemp)
-    {
-        Write-Output "Não possui variaveis lag para salvar"
-        return;
-    }
+    $path = Join-Path $directory -ChildPath '.Lag'
+    $lag = @{}
 
-    $path = [Path]::Combine($directory, '.Lag');
-    $lag = @{};
-
-    foreach ($var in $LagVariablesTemp)
-    {
+    foreach ($var in $LagVariablesTemp) {
         $lagVariable = Get-Variable -Name $var
         $lag.Add($lagVariable.Name, $lagVariable.Value)
     }
 
-    $json = $lag | ConvertTo-Json;
+    $json = $lag | ConvertTo-Json
     
-    New-Item -Path $path -Value $json;
+    New-Item -Path $path -Value $json
+    Write-Host 'Saved .Lag file'
 }

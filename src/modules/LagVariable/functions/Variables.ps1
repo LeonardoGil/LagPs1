@@ -5,17 +5,18 @@ function Add-LagVariable {
     .DESCRIPTION
        Adiciona PSCustomObject como Variavel no Contexto Global
     .EXAMPLE
-       Add-LagVariable 'Projetos' 'C:\Projetos' }
+       Add-LagVariable 'Projetos' 'C:\Projetos' 
 #>
 
+    [CmdletBinding()]
     param (
         # Nome da Variavel
-        [Parameter(Mandatory, Position=0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $Key,
 
         # Valor da Variavel
-        [Parameter(Mandatory, Position=1)]
+        [Parameter(Mandatory, Position = 1)]
         [System.Object]
         $Value,
 
@@ -24,62 +25,79 @@ function Add-LagVariable {
         $UpdateFile
     )
 
+    $ErrorActionPreference = 'Stop'
+
     try {
-        Write-Verbose "Add Variable: $key"
+        Write-Verbose "Adding variable: $key"
         New-Variable -Name $Key -Value $Value -Scope Global
         
         # Grava o nome da Variavel numa lista temporaria
         Push-LagVariablesTemp $Key
 
-        if ($UpdateFile -and (Test-Path $LagFilePath)) 
-        {
-            Remove-Item -Path $LagFilePath -Force
+        if ($UpdateFile) {
 
-            [Path]::GetDirectoryName($LagFilePath) | Save-LagVariablesFile
+            if ($null -eq $LagFilePath) {
+                Write-Host '$LagFilePath is not defined.' -ForegroundColor Red
+                return;
+            }
+
+            if (Test-Path $LagFilePath) {
+                Remove-Item -Path $LagFilePath -Force
+                Write-Host 'Removed .Lag file'
+    
+                [Path]::GetDirectoryName($LagFilePath) | Save-LagVariablesFile
+            }
+            else {
+                Write-Host 'File .lag does not exist.' -ForegroundColor Red
+                return
+            }
         }
     }
     catch [System.Exception] {
-        Write-Host 'Ocorreu um erro inesperado!' -ForegroundColor Red
-        Write-Output $_.Exception.Message
+        Write-Host 'An unexpected error occurred.' -ForegroundColor Red
+        throw $_
     }
 }
 
 function New-LagVariable {
+    [CmdletBinding()]
     param(
-        [Parameter(Mandatory, Position=0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $key,
 
         [switch]
-        $simples
+        $simples,
+
+        [switch]
+        $save
     )
 
     $result = @{}
 
     if ($LagVariablesTemp -and (($LagVariablesTemp | Where-Object { $_ -like $key }).Count -ne 0)) {
-        Write-Output 'Ja possui uma variavel com esse nome'
+        Write-Host 'A variable with that name already exists.' -ForegroundColor Red
         return
     }
     
-    for ($i = 0; $i -lt 10; $i++) {
-
+    do {
         if ($simples) {
-            Write-Output 'Informe um Valor'
+            Write-Host 'Informe um Valor' -ForegroundColor DarkGray 
             $result = Read-Host
 
             if ($result -eq [string]::Empty) {
-                Write-Host 'Operação cancelado' -ForegroundColor Red
+                Write-Host 'Operation Canceled' -ForegroundColor Red
                 return
             }
 
             break
         }
         else {
-            Write-Output 'Informe a Propriedade:'
+            Write-Host 'Informe a Propriedade:' -ForegroundColor DarkGray
             $property = Read-Host
 
             if ($property -eq [string]::Empty) {
-                Write-Host 'Processo interrompido (property)' -ForegroundColor DarkYellow
+                Write-Host 'Process interrupted (Property)' -ForegroundColor DarkYellow
                 break
             }
 
@@ -87,22 +105,31 @@ function New-LagVariable {
             $value = Read-Host
 
             if ($value -eq [string]::Empty) {
-                Write-Host 'Processo interrompido (Valor)' -ForegroundColor DarkYellow
+                Write-Host 'Process interrupted (Value)' -ForegroundColor DarkYellow
                 break
             }
 
             # Adiciona Propriedade e valor
             $result.Add($property, $value)
         }
-    }
+    } 
+    while ($true)
+
 
     if ($result.Count -eq 0) {
-        Write-Host 'Operação cancelado' -ForegroundColor Red
+        Write-Host 'Operation Canceled' -ForegroundColor Red
         return
     }
 
-    Add-LagVariable -Key $key -Value $result
-    Write-Host "Gerado LagVariavel: $key" -ForegroundColor Green
+
+    $updateFile = $save -or $lagAutoSave
+    
+    if ($updateFile) {
+        Write-Verbose 'Update file'
+    }
+
+    Add-LagVariable -Key $key -Value $result -UpdateFile:$updateFile
+    Write-Host "Generated LagVariavel: $key" -ForegroundColor Green
 }
 
 function Push-LagVariablesTemp {
@@ -116,21 +143,28 @@ function Push-LagVariablesTemp {
        Push-LagVariablesTemp 'Teste'
 #>
 
+    [CmdletBinding()]
     param(
-        [Parameter(Mandatory, Position=0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]
         $variableName
     )
 
     try {
+        # Busca $LagVariablesTemp
         $variablesTemp = Get-Variable -Name 'LagVariablesTemp' -ErrorAction SilentlyContinue
+        
+        # Adiciona o nome da variavel a lista: $LagVariablesTemp
         $variablesTemp.Value += $variableName
-
-        Write-Verbose 'Update LagVariablesTemp'
+ 
+        # Atualiza $LagVariablesTemp
         Set-Variable -Name 'LagVariablesTemp' -Value $variablesTemp.Value -Scope Global
+        
+        Write-Verbose "Updated LagVariablesTemp with $variableName"
     }
     catch [System.Exception] {
-        Write-Verbose 'Add LagVariablesTemp'
-        new-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global
+        New-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global
+
+        Write-Verbose 'Generated LagVariablesTemp'
     }
 }
