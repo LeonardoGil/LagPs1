@@ -25,22 +25,22 @@ function Add-LagVariable {
     )
 
     try {
-        Write-Verbose "Add Variable: $key";
-        New-Variable -Name $Key -Value $Value -Scope Global;
+        Write-Verbose "Add Variable: $key"
+        New-Variable -Name $Key -Value $Value -Scope Global
         
         # Grava o nome da Variavel numa lista temporaria
-        Push-LagVariablesTemp $Key;
+        Push-LagVariablesTemp $Key
 
         if ($UpdateFile -and (Test-Path $LagFilePath)) 
         {
-            Remove-Item -Path $LagFilePath -Force;
+            Remove-Item -Path $LagFilePath -Force
 
             [Path]::GetDirectoryName($LagFilePath) | Save-LagVariablesFile
         }
     }
     catch [System.Exception] {
         Write-Host 'Ocorreu um erro inesperado!' -ForegroundColor Red
-        Write-Output $_.Exception.Message;
+        Write-Output $_.Exception.Message
     }
 }
 
@@ -48,49 +48,61 @@ function New-LagVariable {
     param(
         [Parameter(Mandatory, Position=0)]
         [string]
-        $name
+        $key,
+
+        [switch]
+        $simples
     )
 
-    $key = [string]::Empty
-    $value = [string]::Empty
-    
-    $variable = @{}
-    $continue = $true
+    $result = @{}
 
-    if ($LagVariablesTemp -and (($LagVariablesTemp | Where-Object { $_ -like 'teste' }).Count -ne 0)) {
+    if ($LagVariablesTemp -and (($LagVariablesTemp | Where-Object { $_ -like $key }).Count -ne 0)) {
         Write-Output 'Ja possui uma variavel com esse nome'
-        return;
+        return
     }
     
-    do {
-        Write-Output 'Informe a Propriedade'
-        $key = Read-Host
+    for ($i = 0; $i -lt 10; $i++) {
 
-        if ($key -eq [string]::Empty) {
-            Write-Output 'Processo interrompido (Key)'
-            $continue = $false
+        if ($simples) {
+            Write-Output 'Informe um Valor'
+            $result = Read-Host
+
+            if ($result -eq [string]::Empty) {
+                Write-Host 'Operação cancelado' -ForegroundColor Red
+                return
+            }
+
+            break
         }
         else {
-            Write-Output 'Informe o Valor'
+            Write-Output 'Informe a Propriedade:'
+            $property = Read-Host
+
+            if ($property -eq [string]::Empty) {
+                Write-Host 'Processo interrompido (property)' -ForegroundColor DarkYellow
+                break
+            }
+
+            Write-Output 'Informe um Valor:'
             $value = Read-Host
 
             if ($value -eq [string]::Empty) {
-                Write-Output 'Processo interrompido (Valor)'
-                $continue = $false
+                Write-Host 'Processo interrompido (Valor)' -ForegroundColor DarkYellow
+                break
             }
-            else {
-                # Adiciona Propriedade e valor
-                $variable.Add($key, $value)
-            }
-        }
-    } while ($continue)
 
-    if ($variable.Count -eq 0) {
-        Write-Host 'Evento cancelado'
+            # Adiciona Propriedade e valor
+            $result.Add($property, $value)
+        }
+    }
+
+    if ($result.Count -eq 0) {
+        Write-Host 'Operação cancelado' -ForegroundColor Red
         return
     }
 
-    Add-LagVariable -Key $name -Value $variable
+    Add-LagVariable -Key $key -Value $result
+    Write-Host "Gerado LagVariavel: $key" -ForegroundColor Green
 }
 
 function Push-LagVariablesTemp {
@@ -111,14 +123,14 @@ function Push-LagVariablesTemp {
     )
 
     try {
-        $variablesTemp = Get-Variable -Name 'LagVariablesTemp' -ErrorAction SilentlyContinue;
-        $variablesTemp.Value += $variableName;
+        $variablesTemp = Get-Variable -Name 'LagVariablesTemp' -ErrorAction SilentlyContinue
+        $variablesTemp.Value += $variableName
 
         Write-Verbose 'Update LagVariablesTemp'
-        Set-Variable -Name 'LagVariablesTemp' -Value $variablesTemp.Value -Scope Global;
+        Set-Variable -Name 'LagVariablesTemp' -Value $variablesTemp.Value -Scope Global
     }
     catch [System.Exception] {
         Write-Verbose 'Add LagVariablesTemp'
-        new-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global;
+        new-Variable -Name 'LagVariablesTemp' -Value @($variableName) -Scope Global
     }
 }
