@@ -1,13 +1,18 @@
-$scriptsPath = [IO.Path]::Combine($PSScriptRoot, 'functions/*.ps1')
+using namespace System.IO;
+
+$scriptsPath = [Path]::Combine($PSScriptRoot, '*')
+$scripts = Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse | Select-Object -ExpandProperty FullName
+
 $lagAutoSave = $false
 
+$ErrorActionPreference = 'stop'
+
 # Importa os scripts
-Get-ChildItem -Path $scriptsPath -Recurse -ErrorAction Stop | ForEach-Object { Import-Module -Name $_ }
+$scripts | ForEach-Object { Import-Module -Name $_ }
 
 $functionsToExport = @(
     # File 
     "Push-LagVariablesFile",
-    "Get-LagVariablesFile",
     "Save-LagVariablesFile"
 
     # Variable
