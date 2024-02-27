@@ -111,7 +111,10 @@ function Connect-Polaris {
 
         [Parameter(Position = 2, ValueFromPipeline)]
         [string]
-        $key
+        $key,
+
+        [switch]
+        $putty
     )
     
     if ([string]::IsNullOrEmpty($ip)) { 
@@ -120,12 +123,18 @@ function Connect-Polaris {
     }
 
     if (-not (Test-Path $key)) {
-        Write-Output 'Chave .ppk não encontrada!';
+        Write-Host 'Key not found' -ForegroundColor Red
         return;
     }
 
     Clear-Host;
 
-    Write-Host 'Conectando na maquina' -ForegroundColor Green;
-    plink -ssh -i $key "$username@$ip";
+    if ($putty) {
+        Write-Host 'Conectando na maquina via Putty' -ForegroundColor Green;
+        plink -ssh -i $key "$username@$ip";
+    }
+    else {
+        Write-Host 'Conectando na maquina via SSH' -ForegroundColor Green;
+        ssh -i $key "$username@$ip"
+    }
 }
