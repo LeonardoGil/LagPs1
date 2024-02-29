@@ -40,7 +40,9 @@ function Save-LagVariablesFile {
     
     $json = $lag | ConvertTo-Json
         
-    New-Item -Path $path -Value $json
-    Write-Host 'Saved .Lag file'
+    New-Item -Path $path -Value $json | Out-Null
+    
+    Write-Verbose "Saved in $path"
+    Write-Host 'Saved .Lag file' -ForegroundColor Green
 }
     
