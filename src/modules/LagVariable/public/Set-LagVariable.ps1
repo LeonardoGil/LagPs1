@@ -2,7 +2,7 @@ function Set-LagVariable {
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position=0)]
         [string]
         $key,
 
@@ -10,27 +10,32 @@ function Set-LagVariable {
         [string]
         $parameter,
 
-        [Parameter()]
+        [Parameter(Mandatory)]
         [string]
         $value
     )
 
     $ErrorActionPreference = 'Stop'
+    $variableValue = $null
 
     try {
-        Get-Variable -Name $key -ErrorAction 'Stop'
+        $variableValue = (Get-Variable -Name $key -ErrorAction 'Stop').Value
+        Write-Verbose "Variable found; Value: $variableValue"
     }
     catch {
         Write-Host "Key ($key) not found." -ForegroundColor Red
         return
     }
 
-    # Variavel simples
-    if ($key -is [string]) {
-        Set-Variable -Name $key -Value $value
+    if ($variableValue -is [string]) {
+        Write-Verbose 'Variable is String'
+
+        Write-Verbose "Will be replaced from $variableValue to $value"
+        $variableValue = $value
     }
-    # Variavel composta
-    else {
+    elseif ($variableValue -is [PSCustomObject]) {
+        Write-Verbose 'Variable is Object'
+
         if ([string]::IsNullOrEmpty($parameter)) {
             Write-Host 'Please specify the property you want to change' -ForegroundColor DarkYellow
             $parameter = Read-Host
@@ -40,8 +45,20 @@ function Set-LagVariable {
                 return
             }
         }
+
+        $properyInfo = $variableValue.psobject.Properties | Where-Object { $_.Name -like $parameter }
+        
+        Write-Verbose "Will be replaced from $($properyInfo.Value) to $value"
+        $properyInfo.Value = $value
+    }
+    else {
+        Write-Host 'Unsupported variable type' -ForegroundColor Red
+        return
     }
 
+    Set-Variable -Name $key -Value $variableValue -Scope Global
+
+    # Atualiza o arquivo .Lag
     if (Test-Path $LagFilePath) {
         Remove-Item -Path $LagFilePath -Force
         Write-Host 'Removed .Lag file'
