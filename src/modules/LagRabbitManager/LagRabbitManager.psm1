@@ -17,22 +17,15 @@ $credential =       @{ Authorization = "Basic $rabbitBase64Auth" }
 # Outros
 $disregardList =        @('nsb.delay*');
 
-class LagQueue {
-
-    [string] $name
-    [int] $messages
-    [string] $vHost
-
-    static [string] $vHostDefault = '%2f'
-}
-
 $functionsToExport = @(
     "Get-RabbitOverview",
     "Get-RabbitQueueMessages",
-    "Get-RabbitQueues"
+    "Get-RabbitQueues",
+    "Publish-RabbitMessageToQueue"
 )
 
 $variablesToExport = @(
+    "credential"
 )
 
 Export-ModuleMember -Function $functionsToExport -Variable $variablesToExport
