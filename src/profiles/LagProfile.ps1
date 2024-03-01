@@ -19,9 +19,6 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadlineOption -HistorySearchCursorMovesToEnd
 Set-PSReadlineOption -ShowToolTips
 
-# Alias
-New-Alias -Name 'ex' -Value explorer;
-
 function Initialize-Lag {
     # Load the lag Variables for session
     Push-LagVariablesFile
@@ -34,3 +31,6 @@ function Initialize-Lag {
 }
 
 Initialize-Lag
+
+# Alias
+New-Alias -Name 'ex' -Value explorer;
