@@ -1,33 +1,28 @@
 function Get-RabbitQueues() {
-
     param (
-        # Considera todas as filas
-        [switch]
-        $All
+        [int]
+        $clipboard 
     )
 
-    $queues = Invoke-RestMethod -Uri "${rabbitUrl}/api/queues" -Headers $credential -Method Get;
+    $queuesResult = Invoke-RestMethod -Uri "${rabbitUrl}/api/queues" -Headers $credential -Method Get;
+    $queues = @()
 
-    $queues = $queues | ForEach-Object { 
-        $queue = [LagQueue]::new();
-        $queue.name = $_.name;
-        $queue.messages = $_.messages;
+    for ($i = 0; $i -lt $queuesResult.Count; $i++) {
+        $queue = [LagQueue]::new()
+        
+        $queue.name = $queuesResult[$i].name
+        $queue.messages = $queuesResult[$i].messages
+        $queue.index = $i
 
-        return $queue;
-    };
+        $queues += $queue
+    }
 
-    # Em construção
-    # if (-not($All)) {
-    #     # Desconsidera algumas filas (Como nsb.Delay)
-    #     $queues = $queues | Where-Object {
-    #         $queue = $_;
-    #         $disregard = ($disregardList | Where-Object { $queue -like $_ }).Count > 0;
-            
-    #         Write-Output "$($queue.name) = $disregard";
+    if ($null -eq $clipboard) {
+        $name = $queues[$clipboard].name
+        
+        Write-Verbose "Set-Clipboard => $name"
+        Set-Clipboard -Value $name
+    }
 
-    #         return -not($disregard);
-    #     }
-    # }
- 
-    Write-Output $queues;
+    return $queues;
 }
