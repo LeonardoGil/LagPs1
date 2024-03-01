@@ -13,12 +13,16 @@ Import-Module -Name Terminal-Icons
 . "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
 . "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
 
-# PSReadLine
+# PSReadLine Keys
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# PSReadLine Options
 Set-PSReadlineOption -HistorySearchCursorMovesToEnd
 Set-PSReadlineOption -ShowToolTips
+Set-PSReadlineOption -BellStyle None  # Desabilita campainha
+Set-PSReadLineOption -HistorySavePath "C:\Temp\$($Host.Name)_history.txt"
 
 function Initialize-Lag {
     # Load the lag Variables for session
