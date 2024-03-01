@@ -3,14 +3,15 @@ $psProjectPath = 'C:\Projetos\LagPs1\src'
 # Local Modules 
 Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1"
 Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1"
-
-Import-Module -Name "$psProjectPath\works\Libs\LagMoveNddLibrary.ps1"
-Import-Module -Name "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
-Import-Module -Name "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
-Import-Module -Name "$psProjectPath\works\Libs\LagMoveRabbitMqNddLibrary.ps1"
+Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1"
 
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
+
+# Scripts
+. "$psProjectPath\works\Libs\LagMoveNddLibrary.ps1"
+. "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
+. "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
 
 # PSReadLine
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
