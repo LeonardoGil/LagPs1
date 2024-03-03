@@ -11,7 +11,9 @@ function Get-RabbitQueueMessages {
         count  = 20  
     } | ConvertTo-Json
 
-    $url = "$rabbitApiUrl/queues/$([LagQueue]::vHostDefault)/$nameQueue/get";
+    $url = "$rabbitApiUrl/queues/$([Queue]::vHostDefault)/$nameQueue/get";
 
-    Invoke-RestMethod -Uri $url -Headers $credential -Method Post -Body $body -ContentType "application/json";
+    $result = Invoke-RestMethod -Uri $url -Headers $credential -Method Post -Body $body -ContentType "application/json";
+
+    return $result
 }

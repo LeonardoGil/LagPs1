@@ -1,4 +1,4 @@
-class LagQueue {
+class Queue {
 
     [int] $index
     [string] $name

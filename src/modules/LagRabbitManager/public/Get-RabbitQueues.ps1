@@ -9,7 +9,7 @@ function Get-RabbitQueues() {
     $queues = @()
 
     for ($i = 0; $i -lt $queuesResult.Count; $i++) {
-        $queue = [LagQueue]::new()
+        $queue = [Queue]::new()
         
         $queue.name = $queuesResult[$i].name
         $queue.messages = $queuesResult[$i].messages
