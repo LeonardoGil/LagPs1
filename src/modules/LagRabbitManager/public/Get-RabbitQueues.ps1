@@ -1,4 +1,5 @@
 function Get-RabbitQueues() {
+    [CmdletBinding()]
     param (
         [int]
         $clipboard 
@@ -17,9 +18,8 @@ function Get-RabbitQueues() {
         $queues += $queue
     }
 
-    if ($null -eq $clipboard) {
+    if ($clipboard -ne $null) {
         $name = $queues[$clipboard].name
-        
         Write-Verbose "Set-Clipboard => $name"
         Set-Clipboard -Value $name
     }
