@@ -1,9 +1,11 @@
 $psProjectPath = 'C:\Projetos\LagPs1\src'
 
+$lagVerbose = $false
+
 # Local Modules 
-Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1"
-Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1"
-Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1"
+Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1" -Verbose:$lagVerbose
+Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1" -Verbose:$lagVerbose
+Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" -Verbose:$lagVerbose
 
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
