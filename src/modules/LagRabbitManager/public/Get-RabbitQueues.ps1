@@ -2,7 +2,12 @@ function Get-RabbitQueues() {
     [CmdletBinding()]
     param (
         [int]
-        $clipboard 
+        [Alias('c')]
+        $clipboard,
+
+        [switch]
+        [Alias('m')]
+        $withMessage
     )
 
     $queuesResult = Invoke-RestMethod -Uri "${rabbitUrl}/api/queues" -Headers $credential -Method Get;
@@ -16,6 +21,15 @@ function Get-RabbitQueues() {
         $queue.index = $i
 
         $queues += $queue
+    }
+
+    if ($withMessage) {
+        $queues = $queues | Where-Object { $_.messages -gt 0 }        
+
+        if ($null -eq $queues) {
+            Write-Host 'No queue has messages' -ForegroundColor DarkYellow
+            return;
+        }
     }
 
     if ($clipboard -ne $null) {
