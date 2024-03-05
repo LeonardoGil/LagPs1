@@ -21,7 +21,8 @@ $functionsToExport = @(
     "Get-RabbitOverview",
     "Get-RabbitQueueMessages",
     "Get-RabbitQueues",
-    "Publish-RabbitMessageToQueue"
+    "Publish-RabbitMessageToQueue",
+    "Remove-RabbitMessages"
 )
 
 $variablesToExport = @(
