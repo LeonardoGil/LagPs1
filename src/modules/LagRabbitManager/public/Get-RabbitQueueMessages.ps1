@@ -11,7 +11,11 @@ function Get-RabbitQueueMessages {
 
         [Parameter()]
         [switch]
-        $originalResult
+        $originalResult,
+        
+        [Parameter()]
+        [string]
+        $export
     )
 
     $body = @{
@@ -51,5 +55,10 @@ function Get-RabbitQueueMessages {
         $messages += $message
     }
 
-    return $messages
+    if (-not [string]::IsNullOrEmpty($export)) {
+        Export-RabbitMessages -pathLocation $export -messages $messages
+    }
+    else {
+        return $messages
+    }
 }
