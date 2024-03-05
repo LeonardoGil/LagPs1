@@ -1,7 +1,7 @@
 function Get-RabbitQueues() {
     [CmdletBinding()]
     param (
-        [int]
+        [nullable[int]]
         [Alias('c')]
         $clipboard,
 
@@ -34,9 +34,16 @@ function Get-RabbitQueues() {
 
     if ($clipboard -ne $null) {
         $name = $queues[$clipboard].name
-        Write-Verbose "Set-Clipboard => $name"
+
+        if ([string]::IsNullOrEmpty($name)) {
+            Write-Host "Index [$clipboard] is out of range" -ForegroundColor Red
+            return
+        }
+
+        Write-Host "saved $name" -ForegroundColor DarkYellow
         Set-Clipboard -Value $name
     }
-
-    return $queues;
+    else {
+        return $queues;
+    }
 }
