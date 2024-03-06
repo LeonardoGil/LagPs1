@@ -33,7 +33,7 @@ function Get-RabbitQueues() {
     }
 
     if ($clipboard -ne $null) {
-        $name = $queues[$clipboard].name
+        $name = ($queues | Where-Object { $_.index -eq $clipboard}).name
 
         if ([string]::IsNullOrEmpty($name)) {
             Write-Host "Index [$clipboard] is out of range" -ForegroundColor Red
