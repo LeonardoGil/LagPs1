@@ -44,13 +44,13 @@ function Get-RabbitQueueMessages {
         $message.Type = $obj.Properties.type
         $message.ContentType = $obj.Properties.content_type
 
-        # Write-Output $obj.Properties.headers
+        $headers = $obj.Properties.headers
 
-        $message.TimeSent = -join ($obj.Properties.headers.'NServiceBus.TimeSent'[0..18]) 
+        $message.TimeSent = -join ($headers.'NServiceBus.TimeSent'[0..18]) 
 
-        if ($obj.Properties.headers.'Tenant') {
-            $message.Tenant = $obj.Properties.headers.'Tenant'
-        }
+        if ($headers.'Tenant') { $message.Tenant = $headers.'Tenant' }
+        if ($headers.'NServiceBus.ExceptionInfo.StackTrace') { $message.ExceptionStackTrace = $headers.'NServiceBus.ExceptionInfo.StackTrace' }
+        if ($headers.'NServiceBus.ExceptionInfo.Message') { $message.ExceptionMessage = $headers.'NServiceBus.ExceptionInfo.Message' }
 
         $messages += $message
     }
@@ -59,6 +59,8 @@ function Get-RabbitQueueMessages {
         Export-RabbitMessages -pathLocation $export -messages $messages
     }
     else {
-        return $messages
+        $result = $messages | Select-Object -Property Queue, Position, Type, TimeSent, ExceptionMessage | Format-List
+
+        return $result
     }
 }

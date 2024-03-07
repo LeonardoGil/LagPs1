@@ -6,6 +6,9 @@ class Message {
         [string]$Payload
         [string]$ContentType
 
+        [string]$ExceptionMessage
+        [string]$ExceptionStackTrace
+
         [datetime]$TimeSent
         [string]$Tenant
 }
