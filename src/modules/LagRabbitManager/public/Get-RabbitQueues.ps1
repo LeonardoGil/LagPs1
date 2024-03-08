@@ -10,7 +10,7 @@ function Get-RabbitQueues() {
         $withMessage
     )
 
-    $queuesResult = Invoke-RestMethod -Uri "${rabbitUrl}/api/queues" -Headers $credential -Method Get;
+    $queuesResult = Invoke-RestMethod -Uri "$($credential.Url)/api/queues" -Header $credential.GetHeader() -Method Get;
     $queues = @()
 
     for ($i = 0; $i -lt $queuesResult.Count; $i++) {

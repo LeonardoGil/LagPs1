@@ -15,7 +15,7 @@ function Remove-RabbitMessages () {
 
     $url = "${rabbitApiUrl}/queues/$([Queue]::vHostDefault)/$($queue.Name)/contents"
 
-    Invoke-RestMethod -Uri $url -Headers $credential -Method Delete
+    Invoke-RestMethod -Uri $url -Header $credential.GetHeader() -Method Delete
 
     Write-Host 'Deleted messages' -ForegroundColor DarkGreen
 }

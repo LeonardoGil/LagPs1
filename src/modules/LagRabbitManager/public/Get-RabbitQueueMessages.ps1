@@ -26,7 +26,7 @@ function Get-RabbitQueueMessages {
 
     $url = "$rabbitApiUrl/queues/$([Queue]::vHostDefault)/$nameQueue/get";
 
-    $result = Invoke-RestMethod -Uri $url -Headers $credential -Method Post -Body $body -ContentType "application/json";
+    $result = Invoke-RestMethod -Uri $url -Header $credential.GetHeader() -Method Post -Body $body -ContentType "application/json";
 
     if ($originalResult) {
         return $result
