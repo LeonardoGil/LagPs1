@@ -6,12 +6,12 @@ $lagVerbose = $false
 Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1" -Verbose:$lagVerbose
 Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1" -Verbose:$lagVerbose
 Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" -Verbose:$lagVerbose
+Import-Module -Name "$psProjectPath\modules\LagMove\LagMove.psm1" -Verbose:$lagVerbose
 
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
 
 # Scripts
-. "$psProjectPath\works\Libs\LagMoveNddLibrary.ps1"
 . "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
 . "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
 

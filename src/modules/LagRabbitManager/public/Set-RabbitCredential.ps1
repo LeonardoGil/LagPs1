@@ -11,14 +11,14 @@ function Set-RabbitCredential {
 
         [Parameter(Mandatory, Position=2)]
         [string]
-        $password
+        $pass
     )
 
     $credential = [Credential]::new()
 
     $credential.url = $url
     $credential.username = $user
-    $credential.password = $password
+    $credential.password = $pass
 
     New-Variable -Name 'Credential' -Value $credential -Scope Global
 }
