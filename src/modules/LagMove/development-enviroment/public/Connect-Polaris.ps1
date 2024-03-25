@@ -1,30 +1,26 @@
 function Connect-Polaris {
+    
+    [CmdletBinding()]
     param (
-        [Parameter(Position = 0, ValueFromPipeline)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
         [string]
         $username,
 
-        [Parameter(Position = 1, ValueFromPipeline)]
+        [Parameter(Mandatory, Position = 1, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
         [string]
         $ip,
 
-        [Parameter(Position = 2, ValueFromPipeline)]
+        [Parameter(Mandatory, Position = 2, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript({ Test-Key -key $_ })]
         [string]
         $key,
 
         [switch]
         $putty
     )
-    
-    if ([string]::IsNullOrEmpty($ip)) { 
-        Write-Output 'Necessário informar um Ip!'; 
-        return; 
-    }
-
-    if (-not (Test-Path $key)) {
-        Write-Host 'Key not found' -ForegroundColor Red
-        return;
-    }
 
     Clear-Host;
 
@@ -36,4 +32,26 @@ function Connect-Polaris {
         Write-Host 'Conectando na maquina via SSH' -ForegroundColor Green;
         ssh -i $key "$username@$ip"
     }
+}
+
+function Test-Key() {
+    
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string]
+        $key
+    )
+
+    if (-not (Test-Path $key)) {
+        Write-Error 'Key not found'
+        return $false
+    }
+
+    if (-not ($key -match '\.ppk$')) {
+        Write-Error 'Key must be in .ppk format'
+        return $false
+    }
+
+    return $true
 }
