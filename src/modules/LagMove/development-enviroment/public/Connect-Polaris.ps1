@@ -22,14 +22,19 @@ function Connect-Polaris {
         $putty
     )
 
+    if (-not(Test-Connection -ComputerName $ip -Count 1 -Quiet)) {
+        Write-Host 'Host unavailable' -ForegroundColor Red
+        return
+    }
+
     Clear-Host;
 
     if ($putty) {
-        Write-Host 'Conectando na maquina via Putty' -ForegroundColor Green;
-        plink -ssh -i $key "$username@$ip";
+        Write-Host 'Conectando na maquina via Putty' -ForegroundColor Green
+        plink -ssh -i $key "$username@$ip"
     }
     else {
-        Write-Host 'Conectando na maquina via SSH' -ForegroundColor Green;
+        Write-Host 'Conectando na maquina via SSH' -ForegroundColor Green
         ssh -i $key "$username@$ip"
     }
 }
