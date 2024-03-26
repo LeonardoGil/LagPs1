@@ -24,7 +24,7 @@ function Get-RabbitQueueMessages {
         count  = $count  
     } | ConvertTo-Json
 
-    $url = "$rabbitApiUrl/queues/$([Queue]::vHostDefault)/$nameQueue/get";
+    $url = "$($credential.Url)/api/queues/$([Queue]::vHostDefault)/$nameQueue/get";
 
     $result = Invoke-RestMethod -Uri $url -Header $credential.GetHeader() -Method Post -Body $body -ContentType "application/json";
 
