@@ -2,8 +2,10 @@ using namespace System.IO
 using namespace System
 
 $scriptsPath = [Path]::Combine($PSScriptRoot, '*')
-$scripts = Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse | Select-Object -ExpandProperty FullName
-$scripts | ForEach-Object { Import-Module -Name $_ }
+
+Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse | 
+    Select-Object -ExpandProperty FullName | 
+        ForEach-Object { Import-Module -Name $_ }
 
 # Autenticação
 Set-RabbitCredential 'http://localhost:15672' 'guest' 'guest'
@@ -17,6 +19,7 @@ $functionsToExport = @(
     "Get-RabbitQueues",
     "Publish-RabbitMessageToQueue",
     "Remove-RabbitMessages",
+    "Clear-RabbitQueues",
     "Set-RabbitCredential"
 )
 
