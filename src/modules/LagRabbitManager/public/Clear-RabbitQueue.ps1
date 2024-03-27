@@ -1,4 +1,4 @@
-function Remove-RabbitMessages () {
+function Clear-RabbitQueue () {
     [CmdletBinding()]
     param (
         [Parameter(Position=0, Mandatory)]

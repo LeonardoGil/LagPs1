@@ -10,15 +10,12 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
 # Autenticação
 Set-RabbitCredential 'http://localhost:15672' 'guest' 'guest'
 
-# Outros
-$disregardList =        @('nsb.delay*');
-
 $functionsToExport = @(
     "Get-RabbitOverview",
     "Get-RabbitQueueMessages",
     "Get-RabbitQueues",
     "Publish-RabbitMessageToQueue",
-    "Remove-RabbitMessages",
+    "Clear-RabbitQueue",
     "Clear-RabbitQueues",
     "Set-RabbitCredential"
 )
