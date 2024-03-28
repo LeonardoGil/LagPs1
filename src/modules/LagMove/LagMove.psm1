@@ -17,7 +17,10 @@ $functionsToExport = @(
 
     # General
     "Remove-ParticularSoftware",
-    "Set-Certificates"
+    "Set-Certificates",
+
+    # Integration
+    "Out-AdicionarEntregaJson"
 )
 
 $variablesToExport = @()

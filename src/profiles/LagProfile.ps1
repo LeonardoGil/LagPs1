@@ -11,10 +11,6 @@ Import-Module -Name "$psProjectPath\modules\LagMove\LagMove.psm1" -Verbose:$lagV
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
 
-# Scripts
-. "$psProjectPath\works\Libs\LagThirdPartyLogisticNddLibrary.ps1"
-. "$psProjectPath\works\Libs\LagMoveIntegrationNddLibrary.ps1"
-
 # PSReadLine Keys
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
