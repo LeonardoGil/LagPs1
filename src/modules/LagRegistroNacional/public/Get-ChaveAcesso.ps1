@@ -1,4 +1,6 @@
 function Get-ChaveAcesso {
+    
+    [CmdletBinding()]
     param (
         # Modelo
         [Parameter(Mandatory, Position = 0)]
@@ -17,7 +19,7 @@ function Get-ChaveAcesso {
 
         # Cnpj
         [Parameter(Mandatory, Position = 3)]
-        [long]
+        [string]
         $cnpj,
     
         # Serie
@@ -35,7 +37,7 @@ function Get-ChaveAcesso {
     $chaveSemDigito = -join('42', # UF (Codigo 42 = SC)
                             $mes.ToString("D2"), 
                             $ano.ToString("D2"),
-                            $cnpj.ToString("D14"),
+                            $cnpj,
                             $modelo.ToString("D2"),
                             $serie.ToString("D3"),
                             $numero.ToString("D9"),
