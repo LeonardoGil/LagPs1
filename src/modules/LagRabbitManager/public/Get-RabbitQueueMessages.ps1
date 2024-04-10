@@ -1,6 +1,6 @@
 function Get-RabbitQueueMessages {
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline=$true)]
         [string]
         [Alias('name', 'queue')]
         $nameQueue,
@@ -15,7 +15,11 @@ function Get-RabbitQueueMessages {
         
         [Parameter()]
         [string]
-        $export
+        $export,
+
+        [Parameter()]
+        [switch]
+        $fullDetails
     )
 
     $body = @{
@@ -60,5 +64,9 @@ function Get-RabbitQueueMessages {
         return
     }
     
+    if ($fullDetails) {
+        return $messages | Format-List
+    }
+
     return $messages | Select-Object -Property Queue, Position, Type, TimeSent, ExceptionMessage | Format-List
 }

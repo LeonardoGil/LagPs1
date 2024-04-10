@@ -13,7 +13,7 @@ function Get-RabbitQueues() {
         $showMessagesIndex
     )
 
-    $queuesResult = Invoke-RestMethod -Uri "$($credential.Url)/api/queues" -Header $credential.GetHeader() -Method Get;
+    $queuesResult = Invoke-RestMethod -Uri "$($credential.Url)/api/queues" -Header $credential.GetHeader() -Method Get
     $queues = @()
 
     for ($i = 0; $i -lt $queuesResult.Count; $i++) {
@@ -31,7 +31,7 @@ function Get-RabbitQueues() {
 
         if ($null -eq $queues) {
             Write-Host 'No queue has messages' -ForegroundColor DarkYellow
-            return;
+            return
         }
     }
 
@@ -45,7 +45,8 @@ function Get-RabbitQueues() {
 
         Write-Host "saved $name" -ForegroundColor DarkYellow
         Set-Clipboard -Value $name
-        return
+
+        return $name
     }
 
     if ($showMessagesIndex -ne $null) {
