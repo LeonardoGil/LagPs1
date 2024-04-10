@@ -57,10 +57,8 @@ function Get-RabbitQueueMessages {
 
     if (-not [string]::IsNullOrEmpty($export)) {
         Export-RabbitMessages -pathLocation $export -messages $messages
+        return
     }
-    else {
-        $result = $messages | Select-Object -Property Queue, Position, Type, TimeSent, ExceptionMessage | Format-List
-
-        return $result
-    }
+    
+    return $messages | Select-Object -Property Queue, Position, Type, TimeSent, ExceptionMessage | Format-List
 }

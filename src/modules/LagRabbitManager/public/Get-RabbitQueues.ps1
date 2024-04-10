@@ -7,7 +7,10 @@ function Get-RabbitQueues() {
 
         [switch]
         [Alias('m')]
-        $withMessage
+        $withMessage,
+
+        [nullable[int]]
+        $showMessagesIndex
     )
 
     $queuesResult = Invoke-RestMethod -Uri "$($credential.Url)/api/queues" -Header $credential.GetHeader() -Method Get;
@@ -42,8 +45,19 @@ function Get-RabbitQueues() {
 
         Write-Host "saved $name" -ForegroundColor DarkYellow
         Set-Clipboard -Value $name
+        return
     }
-    else {
-        return $queues;
+
+    if ($showMessagesIndex -ne $null) {
+        $name = ($queues | Where-Object { $_.index -eq $showMessagesIndex}).name
+
+        if ([string]::IsNullOrEmpty($name)) {
+            Write-Host "Index [$showMessagesIndex] is out of range" -ForegroundColor Red
+            return
+        }
+
+        return (Get-RabbitQueueMessages -nameQueue $name)
     }
+    
+    return $queues
 }
