@@ -21,6 +21,7 @@ $functionsToExport = @(
 
     # Integration
     "Out-AdicionarEntregaJson"
+    "Out-IniciarViagemMobile"
 )
 
 $variablesToExport = @()
