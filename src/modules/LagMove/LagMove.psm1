@@ -20,8 +20,9 @@ $functionsToExport = @(
     "Set-Certificates",
 
     # Integration
-    "Out-AdicionarEntregaJson"
-    "Out-IniciarViagemMobile"
+    "Out-AdicionarEntregaJson",
+    "Out-IniciarViagemMobile",
+    "Out-EntregaMobile"
 )
 
 $variablesToExport = @()
