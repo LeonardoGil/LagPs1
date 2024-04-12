@@ -14,15 +14,19 @@ function Out-IniciarViagemMobile() {
 
 
     $viagem = [PSCustomObject]@{
-        viagemId = $viagemId
+        viagemId   = $viagemId
         dataInicio = $date
-        latitude = $latitude.ToString('F6')
-        longitude = $longitude.ToString('F6')
+        latitude   = $latitude.ToString('F6')
+        longitude  = $longitude.ToString('F6')
+    }
+
+    $iniciarViagens = @{ 
+        created = @($viagem)
     }
 
     $object = [PSCustomObject]@{ 
-        iniciarViagens = @{ 
-            created = @($viagem)
+        changes = @{
+            iniciarViagens = $iniciarViagens
         }
     }
 
