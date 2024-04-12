@@ -2,7 +2,7 @@ function Out-IniciarViagemMobile() {
     
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline=$true)]
         [guid]
         $viagemId
     )
