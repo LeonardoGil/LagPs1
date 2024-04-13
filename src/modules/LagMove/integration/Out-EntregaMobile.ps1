@@ -8,7 +8,13 @@ function Out-EntregaMobile() {
 
         [Parameter(Mandatory)]
         [guid[]]
-        $entregasId
+        $entregasId,
+
+        [switch]
+        $foraDoRaio,
+
+        [switch]
+        $fotoValida
     )
 
     $entregas = @()
@@ -19,11 +25,12 @@ function Out-EntregaMobile() {
     foreach ($entregaId in $entregasId) {
         $latitude = ($random.NextDouble() * 100) - 50
         $longitude = ($random.NextDouble() * 100) - 50
+        $ticks = [System.DateTime]::Now.Ticks
 
         $entrega = @{
-            created_at = 0
-            update_at = 0
-            entregaForaDoRaio = $false
+            created_at = $ticks
+            update_at = $ticks
+            entregaForaDoRaio = $foraDoRaio.IsPresent
             nomeRecebedor = "Leonardo"
             documentoRecebedor = (Get-CPFAleatorio)
             latitude = $latitude.ToString('F6')
@@ -33,20 +40,15 @@ function Out-EntregaMobile() {
             documentoId = $entregaId
             viagemId = $viagemId
             dataHora = $date
-            fotoValida = $false
+            fotoValida = $fotoValida.IsPresent
         }    
 
         $entregas += $entrega
     }
 
-    $entregasObject = @{ 
-        created = $entregas
-    }
 
     $object = [PSCustomObject]@{ 
-        changes = @{
-            entregas = $entregasObject
-        }
+        entregas = $entregas
     }
 
     $json = $object | ConvertTo-Json -Depth 15
