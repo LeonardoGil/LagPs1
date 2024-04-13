@@ -4,25 +4,35 @@ function Get-TokenMobile {
     param (
         [Parameter()]
         [string]
-        $cpf = 11484671902, 
+        $cpf, 
 
         [Parameter()]
         [string]
-        $senha = 12345678,
+        $pass,
 
         [Parameter()]
-        [string]
-        $uri = 'http://localhost:9002'
+        [System.Uri]
+        $apiUrl
     )
 
+    $mobileSession = [MobileSession]::Get()
+
+    if ([string]::IsNullOrEmpty($cpf)) { $cpf = $mobileSession.cpf }
+    if ([string]::IsNullOrEmpty($pass)) { $pass = $mobileSession.password }
+    if ($null -eq $apiUrl) { $apiUrl = $mobileSession.auth }
+
     $body = @{
-        client_id  = '3b9a77fb35a54e40815f4fa8641234c5'
+        client_id  = $mobileSession.clientId
         grant_type = 'password'
         userName   = $cpf
-        password   = $senha
+        password   = $pass
     }
     
-    $request = Invoke-WebRequest -Method POST -Uri "$uri/token" -body $body
+    $ErrorActionPreference = 'Stop'
+
+    $url = [System.Uri]::new($apiUrl, 'token');
+
+    $request = Invoke-WebRequest -Method POST -Uri $url -body $body
     
     $json = $request.Content | ConvertFrom-Json
 
@@ -30,5 +40,5 @@ function Get-TokenMobile {
 
     Set-Clipboard -Value $bearer
 
-    return $bearer;
+    return $bearer
 }
