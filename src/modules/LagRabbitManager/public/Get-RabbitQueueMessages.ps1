@@ -19,7 +19,15 @@ function Get-RabbitQueueMessages {
 
         [Parameter()]
         [switch]
-        $fullDetails
+        $fullDetails,
+
+        [Parameter()]
+        [string]
+        $tenant,
+
+        [Parameter()]
+        [string]
+        $type
     )
 
     $body = @{
@@ -59,14 +67,22 @@ function Get-RabbitQueueMessages {
         $messages += $message
     }
 
+    if (-not [string]::IsNullOrEmpty($type)) {
+        $messages = $messages | Where-Object { $_.Type -like "*$type*" }
+    }
+
+    if (-not [string]::IsNullOrEmpty($tenant)) {
+        $messages = $messages | Where-Object { $_.Tenant -like "*$tenant*" }
+    }
+
     if (-not [string]::IsNullOrEmpty($export)) {
         Export-RabbitMessages -pathLocation $export -messages $messages
         return
     }
-    
+
     if ($fullDetails) {
         return $messages | Format-List
     }
 
-    return $messages | Select-Object -Property Queue, Position, Type, TimeSent, ExceptionMessage | Format-List
+    return $messages | Select-Object -Property Queue, Position, Type, Tenant, TimeSent, ExceptionMessage | Format-List
 }
