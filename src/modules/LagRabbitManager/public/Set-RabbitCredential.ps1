@@ -20,5 +20,14 @@ function Set-RabbitCredential {
     $credential.username = $user
     $credential.password = $pass
 
-    New-Variable -Name 'Credential' -Value $credential -Scope Global
+    $variableName = 'Credential'
+
+    $variable = Get-Variable -Name $variableName -ErrorAction SilentlyContinue
+
+    if ($null -eq $variable) {
+        New-Variable -Name $variableName -Value $credential -Scope Global
+    }
+    else {
+        Set-Variable -Name $variableName -Value $credential -Scope Global
+    }
 }
