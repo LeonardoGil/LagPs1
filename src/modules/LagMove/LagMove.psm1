@@ -20,6 +20,7 @@ $functionsToExport = @(
     # General
     "Remove-ParticularSoftware",
     "Set-Certificates",
+    "Set-ProjectWithoutOutput",
 
     # Integration
     "Out-AdicionarEntregaJson",
