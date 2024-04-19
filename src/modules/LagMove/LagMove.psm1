@@ -20,7 +20,7 @@ $functionsToExport = @(
     # General
     "Remove-ParticularSoftware",
     "Set-Certificates",
-    "Set-ProjectWithoutOutput",
+    "Set-PolarisWindowsApplication",
 
     # Integration
     "Out-AdicionarEntregaJson",

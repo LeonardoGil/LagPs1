@@ -1,4 +1,4 @@
-function Set-ProjectWithoutOutput {
+function Set-PolarisWindowsApplication {
 
     [CmdletBinding()]
     param (
