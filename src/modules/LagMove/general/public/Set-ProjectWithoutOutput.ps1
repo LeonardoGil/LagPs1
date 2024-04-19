@@ -4,10 +4,21 @@ function Set-ProjectWithoutOutput {
     param (
         [Parameter()]
         [string]
-        $path = (Get-Location)
+        $path = (Get-Location),
+
+        [Parameter()]
+        [Switch]
+        $GitRevert
     )
 
-    $projects =  Get-ChildItem -Path * -Filter '*BaseProcessor.csproj' -Recurse
+    $filter = '*BaseProcessor.csproj'
+
+    if ($GitRevert) {
+        git restore $filter
+        return
+    }
+
+    $projects =  Get-ChildItem -Path * -Filter $filter -Recurse
 
     foreach ($project in $projects) {
         $fullName = $project.FullName
