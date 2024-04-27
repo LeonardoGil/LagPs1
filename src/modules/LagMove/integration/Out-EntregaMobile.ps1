@@ -14,7 +14,7 @@ function Out-EntregaMobile() {
         $foraDoRaio,
 
         [switch]
-        $fotoValida
+        $fotoInvalida
     )
 
     $entregas = @()
@@ -40,7 +40,7 @@ function Out-EntregaMobile() {
             documentoId = $entregaId
             viagemId = $viagemId
             dataHora = $date
-            fotoValida = $fotoValida.IsPresent
+            fotoValida = -not ($fotoInvalida.IsPresent)
         }    
 
         $entregas += $entrega
