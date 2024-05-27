@@ -5,15 +5,22 @@
 Esse é meu primeiro projeto Powershell totalmente voltado para automatizar e agilizar demandas do dia a dia  
 O intuito é adquirir e praticar todo conhecimento obtido sobre a tecnologia..
 
-## 🚀 Funcionalidades Principais
+## 🚀 Modulos:
 
-- **Modulo de Registro Nacional:** Modulo de registro de Documento Nacionais aleatórios. 
-> Como: CPF, CNPJ, Chaves de acesso NFe/CTe/MDFe...
-- **Modulo de Gerenciamento de Variaveis:** Modulo de gerenciamento das Variaveis da sessão do Powershell. 
-> Podendo Importar/Exportar/Manipular as variaveis do ambiente...
-- **Outros**
-> Já volto para informar 😅
+- **LagRegistroNacional:** 
+> Modulo responsavel pela geração de Documento Nacionais aleatórios.
+- **LagVariable** 
+> Modulo responsavel pelo gerenciamento das Variaveis da sessão do Powershell. 
+- **LagRabbitManager** 
+> Modulo responsavel por facilitar a visualização de Filas e mensagens do RabbitMQ.
+- **LagMove**
+> Modulo responsavel por automatizar ações da aplicação do MOVE.
+  
+## 😉 Profile
 
+- **LagProfile**
+> Perfil pessoal para configuração da sessão do Powershell.
+  
 ## 📦 Instalação
 
 1. Clone o projeto na sua máquina;
