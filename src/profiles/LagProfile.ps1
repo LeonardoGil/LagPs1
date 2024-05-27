@@ -7,7 +7,7 @@ Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1" -Verbo
 Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1" -Verbose:$lagVerbose
 Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" -Verbose:$lagVerbose
 Import-Module -Name "$psProjectPath\modules\LagMove\LagMove.psm1" -Verbose:$lagVerbose
-Import-Module -Name "$psProjectPath\modules\LagMove\LagSQL.psm1" -Verbose:$lagVerbose
+Import-Module -Name "$psProjectPath\modules\LagSQL\LagSQL.psm1" -Verbose:$lagVerbose
 
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
