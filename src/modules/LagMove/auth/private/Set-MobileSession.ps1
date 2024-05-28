@@ -12,12 +12,15 @@ function Set-MobileSession() {
 
         [Parameter()]
         [System.Uri]
-        $api = [System.Uri]::new('http://localhost:9001'),
-
-        [Parameter()]
-        [System.Uri]
-        $auth = [System.Uri]::new('http://localhost:9002')
+        $url = [System.Uri]::new('http://localhost')
     )
+
+    $api = [System.UriBuilder]::new($url)
+    $api.Port = '9001'
+
+    $auth = [System.UriBuilder]::new($url)
+    $auth.Port = '9002'
+
 
     $mobileSession = [MobileSession]::Get()
     $new = $false
@@ -31,8 +34,8 @@ function Set-MobileSession() {
 
     $mobileSession.cpf = $cpf
     $mobileSession.password = $pass
-    $mobileSession.api = [System.Uri]::new($api)
-    $mobileSession.auth = [System.Uri]::new($auth)
+    $mobileSession.api = $api.Uri
+    $mobileSession.auth = $auth.Uri
 
     if ($new) {
         New-Variable -Name ([MobileSession]::variableName) -Value $mobileSession -Scope Global
