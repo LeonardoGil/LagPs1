@@ -11,6 +11,7 @@ Set-MobileSession
         
 $functionsToExport = @(
     # Auth
+    "Set-MobileSession"
     "Get-TokenMobile",
     "Get-TokenPortal",
 
