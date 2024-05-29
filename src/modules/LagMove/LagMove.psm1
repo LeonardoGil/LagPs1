@@ -27,8 +27,8 @@ $functionsToExport = @(
     "Set-PolarisWindowsApplication",
 
     # Integration
-    "Push-AdicionarEntregaJson",
-    "Out-AdicionarEntregaJson",
+    "Push-AdicionarEntrega",
+    "Out-AdicionarEntrega",
     "Out-IniciarViagemMobile",
     "Out-EntregaMobile",
     "Select-ViagensPendentes"

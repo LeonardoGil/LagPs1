@@ -1,4 +1,4 @@
-function Out-AdicionarEntregaJson {
+function Out-AdicionarEntrega {
     
     [CmdletBinding()]
     param (

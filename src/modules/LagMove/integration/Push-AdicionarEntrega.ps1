@@ -1,4 +1,4 @@
-function Push-AdicionarEntregaJson {
+function Push-AdicionarEntrega {
     param(
         # Numero Viagem
         [Parameter(Mandatory, Position=0)]
@@ -21,7 +21,7 @@ function Push-AdicionarEntregaJson {
         $cnpjEmissor
     )
 
-    $body = Out-AdicionarEntregaJson $numeroViagem $cnpjEmissor $serieDocumento $numeroDocumento;
+    $body = Out-AdicionarEntrega $numeroViagem $cnpjEmissor $serieDocumento $numeroDocumento;
 
     $header = @{
         Authorization = Get-TokenPortal
