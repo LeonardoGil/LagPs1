@@ -15,6 +15,9 @@ $functionsToExport = @(
     "Get-TokenMobile",
     "Get-TokenPortal",
 
+    # Database
+    "Select-LagMoveDatabase",
+
     # Development-Enviroment
     "Connect-Polaris",
 
@@ -24,9 +27,11 @@ $functionsToExport = @(
     "Set-PolarisWindowsApplication",
 
     # Integration
+    "Push-AdicionarEntregaJson",
     "Out-AdicionarEntregaJson",
     "Out-IniciarViagemMobile",
-    "Out-EntregaMobile"
+    "Out-EntregaMobile",
+    "Select-ViagensPendentes"
 )
 
 $variablesToExport = @()
