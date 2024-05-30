@@ -12,7 +12,12 @@ function Set-MoveSession() {
 
         [Parameter()]
         [string]
-        $pass = 12345678
+        $pass = 12345678,
+
+        [Parameter()]
+        [string]
+        $ambiente = 'Localhost'
+
     )
 
     $ErrorActionPreference = 'break'
@@ -27,6 +32,8 @@ function Set-MoveSession() {
         $moveSession = [moveSession]::new()
     }
 
+    $moveSession.Url = $url
+    $moveSession.Ambiente = $ambiente
     $moveSession.Mobile.cpf = $cpf
     $moveSession.Mobile.password = $pass
 
