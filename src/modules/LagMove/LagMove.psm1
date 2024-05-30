@@ -7,11 +7,11 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
     Select-Object -ExpandProperty FullName | 
         ForEach-Object { Import-Module -Name $_ }
 
-Set-MobileSession
+Set-MoveSession
         
 $functionsToExport = @(
     # Auth
-    "Set-MobileSession"
+    "Set-MoveSession"
     "Get-TokenMobile",
     "Get-TokenPortal",
 
