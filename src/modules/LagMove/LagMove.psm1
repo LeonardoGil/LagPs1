@@ -10,6 +10,11 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
 Set-MoveSession
         
 $functionsToExport = @(
+    # Classes
+    "DatabaseSession",
+    "MobileSession",
+    "MoveSession",
+
     # Auth
     "Set-MoveSession"
     "Get-TokenMobile",
