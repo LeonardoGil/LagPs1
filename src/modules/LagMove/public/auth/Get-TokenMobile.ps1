@@ -15,11 +15,16 @@ function Get-TokenMobile {
         $apiUrl
     )
 
-    $mobileSession = [MobileSession]::Get()
+    $moveSession = [MoveSession]::Get()
 
-    if ([string]::IsNullOrEmpty($cpf)) { $cpf = $mobileSession.cpf }
-    if ([string]::IsNullOrEmpty($pass)) { $pass = $mobileSession.password }
-    if ($null -eq $apiUrl) { $apiUrl = $mobileSession.auth }
+    if ([string]::IsNullOrEmpty($cpf)) { $cpf = $moveSession.Mobile.cpf }
+    if ([string]::IsNullOrEmpty($pass)) { $pass = $moveSession.Mobile.password }
+
+    if ($null -eq $apiUrl) { 
+        $urlBuilder = [System.UriBuilder]::new($mobileSession.Url)
+        $urlBuilder.Port = [MobileSession]::portAuthDefault
+        $apiUrl = $urlBuilder.Uri
+    }
 
     $body = @{
         client_id  = $mobileSession.clientId

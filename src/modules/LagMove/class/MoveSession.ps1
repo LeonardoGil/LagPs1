@@ -1,12 +1,11 @@
-using module .\MobileSession.ps1
-
 class MoveSession { 
-    static [string]$variableName = 'moveSession'
+    static [string] $variableName = 'moveSession'
 
-    [String]$Ambiente
-    [System.Uri]$url
+    [String] $Ambiente
+    [System.Uri] $Url
 
-    [MobileSession]$Mobile
+    [MobileSession] $Mobile
+    [DatabaseSession] $Database
 
     static [MoveSession] Get() {
         return Get-Variable -Name ([MoveSession]::variableName) -Scope Global -ValueOnly -ErrorAction SilentlyContinue
@@ -14,5 +13,6 @@ class MoveSession {
 
     MoveSession() {
         $this.Mobile = [MobileSession]::new()
+        $this.Database = [DatabaseSession]::new()
     }
 }
