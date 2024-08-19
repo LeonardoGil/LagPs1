@@ -11,6 +11,10 @@ function Get-TokenPortal {
         $clientSecret,
 
         [Parameter()]
+        [string]
+        $url = 'https://host.docker.internal:5001/connect/token',
+
+        [Parameter()]
         [switch]
         $default
     )
@@ -35,8 +39,8 @@ function Get-TokenPortal {
     }
 
     $contentType = 'application/x-www-form-urlencoded' 
-    
-    $request = Invoke-WebRequest -Method POST -Uri 'https://host.docker.internal:5001/connect/token' -body $body -ContentType $contentType 
+
+    $request = Invoke-WebRequest -Method POST -Uri $url -body $body -ContentType $contentType 
     
     $json = $request.Content | ConvertFrom-Json
 
