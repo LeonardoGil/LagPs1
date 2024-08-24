@@ -9,7 +9,9 @@ $scripts | ForEach-Object { Import-Module -Name $_ }
 $functionsToExport = @(
     "Get-CPFAleatorio",
     "Get-CNPJAleatorio",
-    "Get-ChaveAcesso"
+    "Get-ChaveAcesso",
+
+    "Get-Base64"
 )
 
 Export-ModuleMember -Function $functionsToExport
