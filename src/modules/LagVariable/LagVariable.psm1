@@ -18,7 +18,8 @@ $functionsToExport = @(
     # Variable
     "Add-LagVariable",
     "New-LagVariable",
-    "Set-LagVariable"
+    "Set-LagVariable",
+    "Remove-LagVariable"
 )
 
 $variablesToExport = @(
