@@ -13,8 +13,8 @@ O intuito é adquirir e praticar todo conhecimento obtido sobre a tecnologia..
 > Modulo responsavel pelo gerenciamento das Variaveis da sessão do Powershell. 
 - **LagRabbitManager** 
 > Modulo responsavel por facilitar a visualização de Filas e mensagens do RabbitMQ.
-- **LagMove**
-> Modulo responsavel por automatizar ações da aplicação do MOVE.
+- **LagSQL** 
+> Modulo responsavel por facilitar consultas no banco SQLServer.
   
 ## 😉 Profile
 
