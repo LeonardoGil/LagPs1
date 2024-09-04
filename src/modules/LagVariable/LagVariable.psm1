@@ -20,6 +20,7 @@ $functionsToExport = @(
     "New-LagVariable",
     "Set-LagVariable",
     "Remove-LagVariable"
+    "Show-LagVariablesTemp"
 )
 
 $variablesToExport = @(
