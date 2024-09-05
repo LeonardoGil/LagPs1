@@ -10,6 +10,10 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
 # Autenticação
 Set-RabbitCredential 'http://localhost:15672' 'guest' 'guest'
 
+New-Alias -Name 'grq' -Value Get-RabbitQueues -Interactive
+New-Alias -Name 'grqm' -Value Get-RabbitQueueMessages
+New-Alias -Name 'crq' -Value Clear-RabbitQueues
+
 $functionsToExport = @(
     "Get-RabbitOverview",
     "Get-RabbitQueueMessages",
@@ -17,11 +21,16 @@ $functionsToExport = @(
     "Publish-RabbitMessageToQueue",
     "Clear-RabbitQueue",
     "Clear-RabbitQueues",
-    "Set-RabbitCredential",
-    "Start-RabbitInteractive"
+    "Set-RabbitCredential"
 )
 
 $variablesToExport = @(
 )
 
-Export-ModuleMember -Function $functionsToExport -Variable $variablesToExport
+$aliasToExport = @(
+    "grq",
+    "grqm",
+    "crq"
+)
+
+Export-ModuleMember -Function $functionsToExport -Variable $variablesToExport -Alias $aliasToExport
