@@ -1,3 +1,6 @@
+using namespace System.Management.Automation.Host;
+
+
 function Get-RabbitQueues() {
     [CmdletBinding()]
     param (
@@ -6,11 +9,15 @@ function Get-RabbitQueues() {
         $clipboard,
 
         [switch]
-        [Alias('m')]
+        [Alias('wm')]
         $withMessage,
 
         [nullable[int]]
-        $messages
+        $messages,
+
+        [switch]
+        [Alias('i')]
+        $interactive
     )
 
     $queuesResult = Invoke-RestMethod -Uri "$($credential.Url)/api/queues" -Header $credential.GetHeader() -Method Get
@@ -24,6 +31,15 @@ function Get-RabbitQueues() {
         $queue.index = $i
 
         $queues += $queue
+    }
+
+    if ($interactive) {
+        $choices = [ChoiceDescription[]](
+            [ChoiceDescription]::new("Yes"),
+            [ChoiceDescription]::new("No")
+        )
+
+        $withMessage = ($host.UI.PromptForChoice("Yes", "Search queues with messages?", $choices, 0) -eq 0)
     }
 
     if ($withMessage) {
