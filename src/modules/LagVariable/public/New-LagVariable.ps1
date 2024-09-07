@@ -1,3 +1,11 @@
+<#
+    .Synopsis
+       Gera uma nova Variavel
+    .DESCRIPTION
+       Defini os valores da LagVariable a adiciona a sessão
+    .EXAMPLE
+       New-LagVariable "Teste" -Value "C:\Teste"
+#>
 function New-LagVariable {
     [CmdletBinding()]
     param(

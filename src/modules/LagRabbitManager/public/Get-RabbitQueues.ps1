@@ -1,6 +1,5 @@
 using namespace System.Management.Automation.Host;
 
-
 function Get-RabbitQueues() {
     [CmdletBinding()]
     param (
@@ -13,6 +12,7 @@ function Get-RabbitQueues() {
         $withMessage,
 
         [nullable[int]]
+        [Alias('m')]
         $messages,
 
         [switch]
@@ -25,21 +25,15 @@ function Get-RabbitQueues() {
 
     for ($i = 0; $i -lt $queuesResult.Count; $i++) {
         $queue = [Queue]::new()
-        
         $queue.name = $queuesResult[$i].name
         $queue.messages = $queuesResult[$i].messages
         $queue.index = $i
-
         $queues += $queue
     }
 
     if ($interactive) {
-        $choices = [ChoiceDescription[]](
-            [ChoiceDescription]::new("Yes"),
-            [ChoiceDescription]::new("No")
-        )
-
-        $withMessage = ($host.UI.PromptForChoice("Yes", "Search queues with messages?", $choices, 0) -eq 0)
+        $choices = [ChoiceDescription[]]([ChoiceDescription]::new("Y"), [ChoiceDescription]::new("N"))
+        $withMessage = ($host.UI.PromptForChoice("Y", "Search queues with messages?", $choices, 0) -eq 0)
     }
 
     if ($withMessage) {
@@ -53,7 +47,6 @@ function Get-RabbitQueues() {
 
     if ($clipboard -ne $null) {
         $name = ($queues | Where-Object { $_.index -eq $clipboard}).name
-
         if ([string]::IsNullOrEmpty($name)) {
             Write-Host "Index [$clipboard] is out of range" -ForegroundColor Red
             return
@@ -61,8 +54,22 @@ function Get-RabbitQueues() {
 
         Write-Host "saved $name" -ForegroundColor DarkYellow
         Set-Clipboard -Value $name
-
         return $name
+    }
+
+    if ($interactive) {
+        $choices = [ChoiceDescription[]]([ChoiceDescription]::new("Y"), [ChoiceDescription]::new("N"))
+        if ($host.UI.PromptForChoice("N", "Get messages from the queue?", $choices, 1) -eq 0) {
+            $messageIndex = $queues | Out-GridView -Title 'Select a queue' -OutputMode Single
+            
+            Write-Host $MessageIndex
+            
+            if ($messageIndex) {
+                $messages = $queues[$messageIndex].index
+            } else {
+                Write-Host 'Get canceled messages' -ForegroundColor DarkYellow
+            }
+        }
     }
 
     if ($messages -ne $null) {
