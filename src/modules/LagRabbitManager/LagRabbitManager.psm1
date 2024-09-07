@@ -10,7 +10,7 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
 # Autenticação
 Set-RabbitCredential 'http://localhost:15672' 'guest' 'guest'
 
-New-Alias -Name 'grq' -Value Get-RabbitQueues -Interactive
+New-Alias -Name 'grq' -Value Get-RabbitQueues
 New-Alias -Name 'grqm' -Value Get-RabbitQueueMessages
 New-Alias -Name 'crq' -Value Clear-RabbitQueues
 

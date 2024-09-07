@@ -27,13 +27,13 @@ function Initialize-Lag {
     Push-LagVariablesFile
     
     # Load Theme of Oh-my-Posh
-    # oh-my-posh init pwsh --config "C:\Projetos\MyThemesOnOhMyPosh\godShell.omp.json" | Invoke-Expression;
+    # oh-my-posh init pwsh --config "C:\Projetos\MyThemesOnOhMyPosh\godShell.omp.json" | Invoke-Expression
     
-    Write-Host "Terminal ON FIREEE" -ForegroundColor Red;
-    Write-Output "Bem vindo a base de controle.";
+    Write-Host "Terminal ON FIREEE" -ForegroundColor Red
+    Write-Output "Bem vindo a base de controle."
 }
 
 Initialize-Lag
 
 # Alias
-New-Alias -Name 'ex' -Value explorer;
+New-Alias -Name 'ex' -Value explorer
