@@ -37,3 +37,15 @@ Initialize-Lag
 
 # Alias
 New-Alias -Name 'ex' -Value explorer
+New-Alias -Name 'st' -Value Set-Title
+
+function Set-Title {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline = $true)]
+        [string]
+        $title
+    )
+
+    $Host.UI.RawUI.WindowTitle = $title
+}
