@@ -8,7 +8,9 @@ $ErrorActionPreference = 'stop'
 # Importa os scripts
 $scripts | ForEach-Object { Import-Module -Name $_ }
 
-$functionsToExport = @()
+$functionsToExport = @(
+    'Set-AzureIp'
+)
 $variablesToExport = @()
 
 Export-ModuleMember -Function $functionsToExport -Variable $variablesToExport
