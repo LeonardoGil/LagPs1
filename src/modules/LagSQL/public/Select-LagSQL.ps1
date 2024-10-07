@@ -2,16 +2,27 @@ function Select-LagSQL {
     
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory, Position=0)]
+        [Parameter(Mandatory)]
         [string]
-        $query    
+        $query,
+
+        [Parameter()]
+        [string]
+        $server = 'localhost',
+
+        [Parameter()]
+        [string]
+        $database = 'master',
+
+        [Parameter()]
+        [string]
+        $user,
+
+        [Parameter()]
+        [string]
+        $password
     )
     
-    $serverName = "host.docker.internal"
-    $databaseName = "TenantCatalogDb_leonardosaoficial"
-    $username = "sa"
-    $password = "P@ssw0rd123"
-
     $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
 

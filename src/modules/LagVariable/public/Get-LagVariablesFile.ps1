@@ -17,9 +17,8 @@ function Get-LagVariablesFile {
     
     $ErrorActionPreference = 'Stop'
     
-    $file = '.lag';
-    $filePath = [Path]::Combine($path, $file);
-        
+    $filePath = Join-Path $path '.lag'
+
     if (-not (Test-Path $filePath)) {
         Write-Host 'File .lag not Found' -ForegroundColor Red
         Write-Host 'Operation Canceled' -ForegroundColor Red
