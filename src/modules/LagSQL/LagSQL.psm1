@@ -12,7 +12,8 @@ if (-not (Get-Module -ListAvailable -Name SqlServer)) {
 }
 
 $functionsToExport = @(
-    "Select-LagSQL"
+    "Select-LagSQL",
+    "Backup-LagSQL"
 )
 $variablesToExport = @()
 
