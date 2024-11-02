@@ -5,9 +5,9 @@ $lagVerbose = $false
 # Local Modules 
 Import-Module -Name "$psProjectPath\modules\LagVariable\LagVariable.psm1" -Verbose:$lagVerbose
 Import-Module -Name "$psProjectPath\modules\LagRegistroNacional\LagRegistroNacional.psm1" -Verbose:$lagVerbose
-Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" -Verbose:$lagVerbose
-Import-Module -Name "$psProjectPath\modules\LagSQL\LagSQL.psm1" -Verbose:$lagVerbose
-Import-Module -Name "$psProjectPath\modules\LagAz\LagAz.psm1" -Verbose:$lagVerbose
+# Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" -Verbose:$lagVerbose
+# Import-Module -Name "$psProjectPath\modules\LagSQL\LagSQL.psm1" -Verbose:$lagVerbose
+# Import-Module -Name "$psProjectPath\modules\LagAz\LagAz.psm1" -Verbose:$lagVerbose
 
 # Third-Party Modules
 Import-Module -Name Terminal-Icons
@@ -38,42 +38,28 @@ Initialize-Lag
 
 # Alias
 New-Alias -Name 'ex' -Value explorer
-New-Alias -Name 'st' -Value Set-Title
-New-Alias -Name 'sm' -Value Set-Max
 
-function Set-Title {
-    [CmdletBinding()]
+function Start-Modules {
     param (
-        [Parameter(ValueFromPipeline = $true)]
-        [string]
-        $title
+        [Parameter()]
+        [switch]
+        $Az,
+        
+        [Parameter()]
+        [switch]
+        $Rabbitmq,
+
+        [Parameter()]
+        [switch]
+        $Sql,
+
+        [Parameter()]
+        [switch]
+        $Util
     )
 
-    $Host.UI.RawUI.WindowTitle = $title
-}
-
-function Set-Max {
-
-    $user32cs = @"
-
-using System;
-using System.Runtime.InteropServices;
-
-public class User32 {    
-    [DllImport("user32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-    
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr GetForegroundWindow();
-}
-
-"@
-
-    Add-Type $user32cs
-
-    $SW_MAXIMIZE = 3
-    $hwnd = [User32]::GetForegroundWindow() 
-
-    [User32]::ShowWindow($hwnd, $SW_MAXIMIZE)
+    if ($Rabbitmq) { Import-Module -Name "$psProjectPath\modules\LagRabbitManager\LagRabbitManager.psm1" }
+    if ($Sql) { Import-Module -Name "$psProjectPath\modules\LagSQL\LagSQL.psm1" }
+    if ($Az) { Import-Module -Name "$psProjectPath\modules\LagAz\LagAz.psm1" }
+    if ($Util) { Import-Module -Name "$psProjectPath\modules\LagUtil\LagUtil.psd1" }
 }
