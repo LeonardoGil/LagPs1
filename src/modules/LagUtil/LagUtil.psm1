@@ -9,3 +9,4 @@ Get-ChildItem -Path $scriptsPath -Filter '*.ps1' -Recurse |
 
 New-Alias -Name 'st' -Value Set-Title
 New-Alias -Name 'sm' -Value Set-Max
+New-Alias -Name 'ilag' -Value Import-LagModule
