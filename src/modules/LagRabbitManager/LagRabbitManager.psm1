@@ -22,6 +22,7 @@ $functionsToExport = @(
     "Clear-RabbitQueue",
     "Clear-RabbitQueues",
     "Set-RabbitCredential"
+    "Export-RabbitMessages"
 )
 
 $variablesToExport = @(
