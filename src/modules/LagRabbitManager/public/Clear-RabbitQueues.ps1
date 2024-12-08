@@ -1,17 +1,24 @@
 function Clear-RabbitQueues {
-    $queues = Get-RabbitQueues -withMessage
+    <#
+    .SYNOPSIS
+        Limpa as mensagens de todas as filas
+    .DESCRIPTION
+        Excluia as mensanges de todas filas disponiveis
+    .NOTES
+        
+    .EXAMPLE
+        Clear-RabbitQueues
+    #>
+    
+    [CmdletBinding()]
+    param()
+
+    $queues = Get-RabbitQueues -withMessage                                           
 
     if ($queues.Count -eq 0) {
         Write-Host 'Empty queues' -ForegroundColor DarkYellow
         return
-    } 
-
-    $header = $credential.GetHeader();
-
-    $queues | ForEach-Object {
-        $url = "$($credential.Url)/api/queues/$([Queue]::vHostDefault)/$($_.Name)/contents"
-        Invoke-RestMethod -Uri $url -Header $header -Method Delete
     }
 
-    Write-Host 'Deleted messages' -ForegroundColor DarkGreen
+    $queues | Select-Object -ExpandProperty Name | Clear-RabbitQueue
 }
