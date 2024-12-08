@@ -1,22 +1,20 @@
+using namespace System
+
 function Get-RabbitQueueMessages {
     param (
-        [Parameter(Mandatory, ValueFromPipeline=$true)]
+        [Parameter(ValueFromPipeline, Mandatory)]
         [string]
         [Alias('name', 'queue')]
         $nameQueue,
 
         [Parameter()]
         [int]
-        $count = 40,
+        $count = 100,
 
         [Parameter()]
         [switch]
         $originalResult,
         
-        [Parameter()]
-        [string]
-        $export,
-
         [Parameter()]
         [switch]
         $fullDetails,
@@ -30,24 +28,60 @@ function Get-RabbitQueueMessages {
         $type
     )
 
-    $body = @{
-        ackmode  = "ack_requeue_true"
-        encoding = "auto"            
-        count  = $count  
-    } | ConvertTo-Json
+    begin {
+        $body           = @{
+                            ackmode     = "ack_requeue_true"
+                            encoding    = "auto"            
+                            count       = $count  
+                        } | ConvertTo-Json
 
-    $url = "$($credential.Url)/api/queues/$([Queue]::vHostDefault)/$nameQueue/get";
-
-    $result = Invoke-RestMethod -Uri $url -Header $credential.GetHeader() -Method Post -Body $body -ContentType "application/json";
-
-    if ($originalResult) {
-        return $result
+        $contentType    = 'application/json'
+        $baseUrl        = $credential.Url + '/api/queues/' + [Queue]::vHostDefault
+        $header         = $credential.GetHeader() 
     }
 
-    $messages = @()
+    process {
+        $url        = "$baseUrl/$nameQueue/get";
+        $result     = @()
 
-    foreach ($obj in $result) {
-        $message = [Message]::new()
+        try {
+            $result = Invoke-RestMethod -Uri $url -Header $header -Method Post -Body $body -ContentType $contentType  
+        }
+        catch [System.Net.WebException] {
+            $message = "Ocorreu um erro ao estabelecer conexão com RabbitMQ"
+            throw New-Object Exception $message
+        }
+        catch {
+            $message = "Ocorreu um erro inesperado: $_"
+            throw New-Object Exception $message
+        }
+    
+        if ($originalResult.IsPresent) {
+            return $result
+        }
+    
+        $messages =  Get-RabbitQueueMessagesFilter ($result | ConvertTo-Message) -type $type -tenant $tenant
+    
+        if ($fullDetails.IsPresent) {
+            return $messages
+        }
+    
+        return $messages | Select-Object -Property Queue, Position, Type, Tenant, TimeSent, ExceptionMessage | Format-List
+    }
+}
+
+
+function ConvertTo-Message {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline)]
+        [PSCustomObject]
+        $obj
+    )
+    
+    process {
+        $message = New-Object Message
+
         $message.Queue = $obj.exchange
         $message.Position = $obj.message_count
         $message.Payload = $obj.payload
@@ -64,25 +98,33 @@ function Get-RabbitQueueMessages {
         if ($headers.'NServiceBus.ExceptionInfo.StackTrace') { $message.ExceptionStackTrace = $headers.'NServiceBus.ExceptionInfo.StackTrace' }
         if ($headers.'NServiceBus.ExceptionInfo.Message') { $message.ExceptionMessage = $headers.'NServiceBus.ExceptionInfo.Message' }
 
-        $messages += $message
-    }
+        return $message
+    }    
+}
+
+function Get-RabbitQueueMessagesFilter {
+    [CmdletBinding()]
+    param (
+        [parameter()]
+        [Message[]]
+        $messages,
+
+        [Parameter()]
+        [string]
+        $type,
+
+        [Parameter()]
+        [string]
+        $tenant
+    )
 
     if (-not [string]::IsNullOrEmpty($type)) {
         $messages = $messages | Where-Object { $_.Type -like "*$type*" }
     }
-
+    
     if (-not [string]::IsNullOrEmpty($tenant)) {
         $messages = $messages | Where-Object { $_.Tenant -like "*$tenant*" }
     }
-
-    if (-not [string]::IsNullOrEmpty($export)) {
-        Export-RabbitMessages -pathLocation $export -messages $messages
-        return
-    }
-
-    if ($fullDetails) {
-        return $messages | Format-List
-    }
-
-    return $messages | Select-Object -Property Queue, Position, Type, Tenant, TimeSent, ExceptionMessage | Format-List
+    
+    return $messages
 }
