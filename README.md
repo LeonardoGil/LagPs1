@@ -2,25 +2,16 @@
 
 [![GitHub License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Esse é meu primeiro projeto Powershell totalmente voltado para automatizar e agilizar demandas do dia a dia  
-O intuito é adquirir e praticar todo conhecimento obtido sobre a tecnologia..
+**LagPs1** é uma coleção de módulos PowerShell desenvolvidos para automatizar tarefas e facilitar a interação com ferramentas específicas.
 
 ## 🚀 Modulos:
 
-- **LagRegistroNacional:** 
-> Modulo responsavel pela geração de Documento Nacionais aleatórios.
-- **LagVariable** 
-> Modulo responsavel pelo gerenciamento das Variaveis da sessão do Powershell. 
-- **LagRabbitManager** 
-> Modulo responsavel por facilitar a visualização de Filas e mensagens do RabbitMQ.
-- **LagSQL** 
-> Modulo responsavel por facilitar consultas no banco SQLServer.
-  
-## 😉 Profile
+- [**LagRabbitManager:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagRabbitManager) Módulo para interação com filas e mensagens do RabbitMQ.
+- [**LagRegistroNacional:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagRegistroNacional) Módulo para geração de documentos nacionais randomizados.
+- [**LagVariable:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagVariable) Módulo para gerenciamento de Variaveis globais nas sessões.
+- [**LagSQL:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagSQL) Módulo para realização de consultas no banco SQLServer.
+- [**LagAZ:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagAz) Módulo para interação com Azure.
 
-- **LagProfile**
-> Perfil pessoal para configuração da sessão do Powershell.
-  
 ## 📦 Instalação
 
 1. Clone o projeto na sua máquina;
