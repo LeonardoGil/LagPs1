@@ -34,7 +34,7 @@ function Add-LagVariable {
         # Grava o nome da Variavel numa lista temporaria
         Push-LagVariablesTemp $Key
 
-        if ($UpdateFile) {
+        if ($UpdateFile -or $LagAutoSave) {
 
             if ($null -eq $LagFilePath) {
                 Write-Host '$LagFilePath is not defined.' -ForegroundColor Red

@@ -28,7 +28,7 @@ function Remove-LagVariable {
         # Remove o nome da Variavel da lista temporaria
         Pop-LagVariablesTemp $Key
 
-        if ($UpdateFile) {
+        if ($UpdateFile -or $LagAutoSave) {
 
             if ($null -eq $LagFilePath) {
                 Write-Host '$LagFilePath is not defined.' -ForegroundColor Red
