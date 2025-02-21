@@ -6,10 +6,19 @@
 #>
 function Show-LagVariablesTemp {
     [CmdletBinding()]
-    param ()
+    param (
+        [Parameter()]
+        [Switch]
+        $Select
+    )
 
     $ErrorActionPreference = 'Stop'
     $variblesTemp = Get-Variable -Name 'LagVariablesTemp' -ValueOnly
-    $variable = $variblesTemp | ForEach-Object { Get-Variable -Name $_ } | Sort-Object -Property Name | Out-GridView -Title "Variaveis" -OutputMode Single
-    return $variable.Value
+    $variables = $variblesTemp | ForEach-Object { Get-Variable -Name $_ } | Sort-Object -Property Name
+
+    if ($Select.IsPresent) {
+        return $variables | Out-GridView -Title "Variaveis" -OutputMode Single
+    }
+
+    return $variables
 }

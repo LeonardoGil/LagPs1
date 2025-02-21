@@ -12,8 +12,9 @@ $scripts | ForEach-Object { Import-Module -Name $_ }
 
 $functionsToExport = @(
     # File 
+    "Get-LagVariablesFile",
     "Push-LagVariablesFile",
-    "Save-LagVariablesFile"
+    "Save-LagVariablesFile",
 
     # Variable
     "Add-LagVariable",
