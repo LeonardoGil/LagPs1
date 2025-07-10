@@ -9,7 +9,7 @@ $ErrorActionPreference = 'stop'
 $scripts | ForEach-Object { Import-Module -Name $_ }
 
 $functionsToExport = @(
-    'Set-AzureIp'
+    'Set-LagAzIp'
 )
 $variablesToExport = @()
 
