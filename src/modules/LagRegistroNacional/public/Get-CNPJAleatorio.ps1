@@ -1,4 +1,12 @@
 function Get-CNPJAleatorio() {
+    
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [switch]
+        $noClipBoard
+    )
+    
     $random = [System.Random]::new()
     $cnpj = [string]::Empty
 
@@ -16,7 +24,10 @@ function Get-CNPJAleatorio() {
     $digitoVerificador = Get-DigitoVerificador $cnpj 9
     $cnpj = -join ($cnpj, $digitoVerificador)
 
-    Set-Clipboard -Value $cnpj
+    if (-not $noClipBoard.IsPresent) {
+        Set-Clipboard -Value $cnpj
+    }
+    
     Write-Verbose "cnpj: $cnpj"
 
     return $cnpj
