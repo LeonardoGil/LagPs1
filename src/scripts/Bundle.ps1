@@ -46,6 +46,8 @@ $OutPsm1 = Join-Path $OutDir "$ModuleName.psm1"
 $OutPsd1 = Join-Path $OutDir "$ModuleName.psd1"
 
 New-Item -ItemType Directory -Path $OutDir -Force | Out-Null
+New-Item -ItemType File -Path $OutPsm1 -Force | Out-Null
+New-Item -ItemType File -Path $OutPsd1 -Force| Out-Null
 
 # Cabeçalho
 @"
