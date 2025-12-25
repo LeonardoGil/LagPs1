@@ -1,10 +1,29 @@
 <#
-    .Synopsis
-       Adiciona a Variavel no contexto Global
-    .DESCRIPTION
-       Adiciona PSCustomObject como Variavel no Contexto Global
-    .EXAMPLE
-       Add-LagVariable 'Projetos' 'C:\Projetos' 
+.SYNOPSIS
+    Cria ou atualiza uma variável no escopo Global usada pelos módulos Lag.
+
+.DESCRIPTION
+    Cria ou atualiza uma variável global com o nome e valor informados. Registra
+    o nome da variável na lista temporária `LagVariablesTemp` para rastreamento
+    entre módulos. Quando solicitado por `-UpdateFile` ou pela configuração
+    `LagAutoSave`, tenta persistir alterações no arquivo apontado por
+    `LagFilePath`.
+
+.PARAMETER Key
+    Nome da variável (string). Obrigatório.
+
+.PARAMETER Value
+    Valor a ser atribuído à variável (System.Object). Obrigatório.
+
+.PARAMETER UpdateFile
+    Switch que força a atualização do arquivo de persistência após a alteração.
+
+.EXAMPLE
+    Add-LagVariable 'Projetos' 'C:\Projetos'
+
+.NOTES
+    - Use `-Verbose` para visualizar mensagens operacionais.
+    - Erros são reportados via `Write-Error`.
 #>
 function Add-LagVariable {
 
@@ -28,33 +47,41 @@ function Add-LagVariable {
     $ErrorActionPreference = 'Stop'
     
     try {
-        Write-Verbose "Adding variable: $key"
-        New-Variable -Name $Key -Value $Value -Scope Global
-        
-        # Grava o nome da Variavel numa lista temporaria
+        Write-Verbose ("Adding/updating variable: $key")
+
+        $variable = Get-Variable -Name $Key -Scope Global -ErrorAction SilentlyContinue
+
+        if ($variable) {
+            Write-Verbose ("Variable $key already exists. Updating value.")
+            Set-Variable -Name $Key -Value $Value -Scope Global
+        }
+        else {
+            Write-Verbose ("Creating new variable $key in Global scope.")
+            New-Variable -Name $Key -Value $Value -Scope Global
+        }
+
         Push-LagVariablesTemp $Key
 
         if ($UpdateFile -or $LagAutoSave) {
 
             if ($null -eq $LagFilePath) {
-                Write-Host '$LagFilePath is not defined.' -ForegroundColor Red
-                return;
+                Write-Error "Configuration variable 'LagFilePath' is not defined. Cannot update persistence file."
+                return
             }
 
             if (Test-Path $LagFilePath) {
                 Remove-Item -Path $LagFilePath -Force
-                Write-Host 'Removed .Lag file'
-    
-                [Path]::GetDirectoryName($LagFilePath) | Save-LagVariablesFile
+                Write-Verbose ("Removed persistence file: $LagFilePath")
+
+                Split-Path -Path $LagFilePath -Parent | Save-LagVariablesFile
             }
             else {
-                Write-Host 'File .lag does not exist.' -ForegroundColor Red
-                return
+                Write-Warning ("Persistence file not found: $LagFilePath")
             }
         }
     }
-    catch [System.Exception] {
-        Write-Host 'An unexpected error occurred.' -ForegroundColor Red
-        throw $_
+    catch {
+        Write-Error ("(Add-LagVariable) Unexpected error while adding variable '$Key': $($_.Exception.Message)")
+        throw
     }
 }
