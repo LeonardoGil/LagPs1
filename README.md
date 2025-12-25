@@ -2,24 +2,41 @@
 
 [![GitHub License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**LagPs1** é uma coleção de módulos PowerShell desenvolvidos para automatizar tarefas e facilitar a interação com ferramentas específicas.
+O **LagPs1** é um repositório com módulos PowerShell focados em automação e produtividade.
+O projeto inclui módulos independentes (ex.: RabbitMQ, SQL Server, Azure) e um perfil de shell com atalhos para facilitar o uso no dia a dia.
 
-## 🚀 Modulos:
+## Conteúdo
 
-- [**LagRabbitManager:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagRabbitManager) Módulo para interação com filas e mensagens do RabbitMQ.
-- [**LagRegistroNacional:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagRegistroNacional) Módulo para geração de documentos nacionais randomizados.
-- [**LagVariable:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagVariable) Módulo para gerenciamento de Variaveis globais nas sessões.
-- [**LagSQL:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagSQL) Módulo para realização de consultas no banco SQLServer.
-- [**LagAZ:**](https://github.com/LeonardoGil/LagPs1/tree/main/src/modules/LagAz) Módulo para interação com Azure.
+- [LagPs1](#lagps1)
+  - [Conteúdo](#conteúdo)
+  - [Módulos](#módulos)
+  - [Requisitos](#requisitos)
+  - [Instalação (modo manual)](#instalação-modo-manual)
 
-## 📦 Instalação
+## Módulos
 
-1. Clone o projeto na sua máquina;
-2. Abra o arquivo Profile e cole o seguinte código:
-> Para descobrir o caminho do arquivo profile, basta digitar no seu terminal: $PROFILE
+| Módulo | Descrição |
+| --- | --- |
+| [LagRabbitManager](src/modules/LagRabbitManager) | Interação com filas/mensagens do RabbitMQ (Management API). |
+| [LagRegistroNacional](src/modules/LagRegistroNacional) | Geração de documentos nacionais randomizados. |
+| [LagVariable](src/modules/LagVariable) | Gerenciamento de variáveis globais e persistência (.lag). |
+| [LagSQL](src/modules/LagSQL) | Consultas e rotinas para SQL Server. |
+| [LagAz](src/modules/LagAz) | Interação com Azure. |
+| [LagUtil](src/modules/LagUtil) | Utilitários diversos (terminal/janelas). |
+| [LagGit](src/modules/LagGit) | Funções auxiliares relacionadas a Git. |
+
+## Requisitos
+
+- PowerShell 5.1+ (Windows) ou PowerShell 7+.
+
+## Instalação (modo manual)
+
+Importe apenas o módulo necessário para a sessão atual:
 
 ```powershell
-$projectPath = "PASTA DO PROJETO";
+# Exemplo: LagRabbitManager
+Import-Module .\src\modules\LagRabbitManager\LagRabbitManager.psd1 -Force
 
-Import-Module -Name "$projectPath/src/profiles/LagProfile.ps1"
+# Exemplo: LagVariable
+Import-Module .\src\modules\LagVariable\LagVariable.psd1 -Force
 ```
