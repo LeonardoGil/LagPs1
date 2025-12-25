@@ -3,8 +3,8 @@ function Set-Active {
     [CmdletBinding()]
     param (
         [Parameter(Position=0)]
-        [Nullable[timespan]]
-        $timer
+        [Nullable[Timespan]]
+        $timer = ([Timespan]::FromHours(2))
     )
 
     Add-Type -TypeDefinition @"
@@ -39,7 +39,7 @@ public class Keyboard
         
         if ($null -ne $timer) {
 
-            $temp = $temp.Add([timespan]::FromSeconds(30))
+            $temp = $temp.Add([timespan]::FromSeconds($sleep))
         }
 
     } while ($null -eq $timer -or $timer -ge $temp)
