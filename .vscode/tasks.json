@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "DebugLagAz",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "if not exist \"${workspaceFolder}\\src\\modules\\LagAz\\dist\\debug.ps1\" (echo Import-Module -Name \"${workspaceFolder}\\src\\modules\\LagAz\\LagAz.psd1\" -Force>\"${workspaceFolder}\\src\\modules\\LagAz\\dist\\debug.ps1\")"
+            ]
+        }
+    ]
+}
